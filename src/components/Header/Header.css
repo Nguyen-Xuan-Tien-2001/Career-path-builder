@@ -1,0 +1,79 @@
+.header__container {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    margin: 0 auto;
+    justify-self: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 0 20px;
+    background: linear-gradient(to right, rgb(5, 85, 134) 0%, rgb(65, 132, 190) 100%);
+}
+
+.LogoHome {
+    margin-right: 38px;
+}
+
+.LogoHome img {
+    object-fit: contain;
+    height: 33px;
+}
+
+.sub_menu ul,
+.nav__menu ul {
+    list-style: none;
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.nav__menu ul li {
+    height: 100%;
+    display: inline;
+    cursor: pointer;
+    color: white;
+    padding: 16px;
+}
+
+
+
+.nav__menu ul li>span {
+    margin-right: 10px;
+}
+
+.sub_menu {
+    display: none;
+    top: 50px;
+    left: 238px;
+    border-radius: 10px;
+    position: absolute;
+    min-width: 160px;
+    max-height: calc(100vh - 100px);
+    padding: 0;
+    overflow: hidden;
+    border-inline-end: 0;
+    background-color: #ffff;
+    color: rgba(0, 0, 0, 0.88);
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+
+
+
+.sub_menu ul li {
+    height: 100%;
+    cursor: pointer;
+    padding: 10px 16px;
+}
+
+.sub_menu ul li:hover {
+    background-color: azure;
+}
+
+@media screen and (min-width: 1024px) {
+    .LogoHome img {
+        width: 170px;
+    }
+}
