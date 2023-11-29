@@ -4,30 +4,41 @@ import ReactFlow, {
     MiniMap,
     useNodesState,
     useEdgesState,
+    Position,
+    ConnectionLineType,
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
 import './map.css'
 
+
 const initNodes = [
     {
         id: 'a',
         data: { label: 'Node A' },
-        position: { x: 250, y: 0 },
+        position: { x: -500, y: 350 },
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
     },
     {
         id: 'b',
         data: { label: 'Node B' },
-        position: { x: 100, y: 300 },
+        position: { x: 0, y: 200 },
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
     },
     {
         id: 'c',
         data: { label: 'Node C' },
-        position: { x: 400, y: 300 },
-    },{
+        position: { x: 0, y: 500 },
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+    }, {
         id: 'd',
         data: { label: 'Node D' },
-        position: { x: 250, y: 500 },
+        position: { x: 400, y: 300 },
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
     },
 ];
 
@@ -36,25 +47,25 @@ const initEdges = [
         id: 'a-b',
         source: 'a',
         target: 'b',
-        animated: true 
+        animated: true
     },
     {
         id: 'a-c',
         source: 'a',
         target: 'c',
-        animated: true 
+        animated: true
     },
     {
         id: 'd-c',
         source: 'c',
         target: 'd',
-        animated: true 
+        animated: true
     },
     {
         id: 'b-d',
         source: 'b',
         target: 'd',
-        animated: true 
+        animated: true
     },
 ];
 
