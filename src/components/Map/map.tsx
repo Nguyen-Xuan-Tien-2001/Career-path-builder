@@ -5,7 +5,6 @@ import ReactFlow, {
     useNodesState,
     useEdgesState,
     Position,
-    ConnectionLineType,
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
@@ -84,6 +83,7 @@ function Map() {
             <Background />
             <Controls />
             <MiniMap />
+            
         </ReactFlow>
     );
 }
