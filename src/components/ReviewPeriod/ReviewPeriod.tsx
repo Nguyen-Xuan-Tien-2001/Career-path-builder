@@ -1,6 +1,8 @@
 import { Row, Col, Input, Select, Button, Modal, Space, DatePicker, DatePickerProps, Table } from 'antd';
 import './ReviewPeriod.css'
 import { useState } from 'react';
+import Footer from '../Footer/Footer';
+import { ColumnsType } from 'antd/es/table';
 const ReviewPeriod = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -19,29 +21,49 @@ const ReviewPeriod = () => {
         console.log(date, dateString);
     };
 
-    const dataSource = [
+    interface DataType {
+        key: string;
+        reviewperiod: string;
+        startDate: string;
+        endDate: string;
+        path: {
+            id: number,
+            pathname: string,
+        };
+    }
+    const dataSource: DataType[] = [
         {
             key: '1',
             reviewperiod: 'Đợt đánh giá 1',
             startDate: '2023-11-08',
             endDate: '2023-11-08',
-            path: {id: 1,
+            path: {
+                id: 1,
                 pathname: 'Lo trinh dev',
             },
-            address: '10 Downing Street',
         },
         {
-            key: '1',
+            key: '2',
             reviewperiod: 'Đợt đánh giá 1',
             startDate: '2023-11-08',
             endDate: '2023-11-08',
-            path: {id: 1,
+            path: {
+                id: 1,
                 pathname: 'Lo trinh dev',
             },
-            address: '10 Downing Street',
+        },
+        {
+            key: '3',
+            reviewperiod: 'Đợt đánh giá 1',
+            startDate: '2023-11-08',
+            endDate: '2023-11-08',
+            path: {
+                id: 1,
+                pathname: 'Lo trinh Dev',
+            },
         },
     ];
-    const columns = [
+    const columns: ColumnsType<DataType> = [
         {
             title: 'STT',
             dataIndex: 'key',
@@ -66,18 +88,30 @@ const ReviewPeriod = () => {
             title: 'Lộ trình',
             dataIndex: 'path',
             key: 'path',
-            render: ()=>{<a>pathname</a>
-            }
+            render: (_) => (
+                <>
+                    {/* {_.map((value: any) => (
+                        <Space size="middle">
+                            <a>Invite {value.pathname}</a>
+                        </Space>
+                    ))} */}
+                     <Space size="middle">
+                            <a>{_.pathname}</a>
+                        </Space>
+                </>
+            )
         },
         {
             title: 'Action',
             key: 'operation',
             fixed: 'right',
             width: 100,
-            render: () => <div>
-                <Button>aa</Button>
-            </div>,
-          },
+            render: () => <Space direction='vertical'>
+                <Button className='btn_table' style={{ backgroundColor: '#FE9D2B' }} type='primary'><span>Sửa</span></Button>
+                <Button className='btn_table' type='primary'>Chi tiết</Button>
+                <Button className='btn_table' type='primary' danger>Xoá</Button>
+            </Space>,
+        },
     ];
 
     return (
@@ -255,6 +289,7 @@ const ReviewPeriod = () => {
                     </Row>
                 </div>
             </Modal>
+            <Footer />
         </div>
     )
 }

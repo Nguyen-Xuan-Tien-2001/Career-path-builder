@@ -1,7 +1,23 @@
+import { Button, Dropdown, MenuProps } from 'antd';
 import './Header.css'
 import { AppstoreOutlined, UserOutlined, DollarOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <Link to={'/so-sanh-nhan-vien'}>So sánh nhân viên</Link>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <Link to={'/thong-tin-nhan-vien-danh-gia'}>Thông tin nhân viên đánh giá</Link>
+      ),
+    },
+  ];
   return (
     <div className='header__container'>
       <div className='LogoHome'>
@@ -9,7 +25,11 @@ const Header = () => {
       </div>
       <div className='nav__menu'>
         <ul>
-          <li><span><AppstoreOutlined /></span>Office</li>
+          <Dropdown menu={{ items }} placement="bottomLeft" arrow>
+            <li><span><AppstoreOutlined /></span>Office
+
+            </li>
+          </Dropdown>
           <li><span><UserOutlined /></span>HRM</li>
           <li><span><DollarOutlined /></span>Payroll</li>
 
