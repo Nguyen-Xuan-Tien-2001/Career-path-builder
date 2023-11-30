@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Map from "../Map/map";
-
+import ReviewPeriod from "../ReviewPeriod/ReviewPeriod";
 function Rout() {
     return (
         <>
@@ -9,7 +9,7 @@ function Rout() {
                 <Route path={'/so-sanh-nhan-vien'} />
                 <Route path={'/thong-tin-nhan-vien-danh-gia'}/>
                 <Route path={'/danh-gia-nhan-vien'}/>
-                <Route path={'/khai-bao-dot-danh-gia'}/>
+                <Route path={'/khai-bao-dot-danh-gia'} element={<ReviewPeriod/>}/>
                 <Route path={'/khai-bao-dot-danh-gia/chi-tiet-dot-danh-gia'}/>
             </Routes>
         </>
