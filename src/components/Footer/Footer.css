@@ -1,0 +1,16 @@
+.footer{
+    margin: 20px 40px 0px;
+    background-color: #4184be;
+    border-radius: 10px;
+}
+.footer_content{
+    display: flex;
+    padding-bottom: 20px;
+    justify-content: center;
+    align-items: flex-start;
+}
+span{
+    color: rgb(255, 255, 255);
+    font-family: BeVietnamPro,sans-serif;
+    font-size: 14px;
+}
