@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Map from "../Map/map";
 import CompareUser from "../CompareUser/compareUser";
 import EmployeeReviewInformation from "../EmployeeReviewInformation/employeeReviewInformation";
+import ReviewPeriod from "../ReviewPeriod/ReviewPeriod";
 
 function Rout() {
     return (

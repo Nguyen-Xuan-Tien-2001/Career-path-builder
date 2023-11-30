@@ -1,4 +1,4 @@
-import { Button, Dropdown, MenuProps } from 'antd';
+import { Dropdown, MenuProps } from 'antd';
 import './Header.css'
 import { AppstoreOutlined, UserOutlined, DollarOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -8,13 +8,19 @@ const Header = () => {
     {
       key: '1',
       label: (
-        <Link to={'/so-sanh-nhan-vien'}>So sánh nhân viên</Link>
+        <Link to={'/so-sanh-nhan-vien'} style={{color: 'black'}}>So sánh nhân viên</Link>
       ),
     },
     {
       key: '2',
       label: (
-        <Link to={'/thong-tin-nhan-vien-danh-gia'}>Thông tin nhân viên đánh giá</Link>
+        <Link to={'/thong-tin-nhan-vien-danh-gia'} style={{color: 'black'}}>Thông tin nhân viên đánh giá</Link>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <Link to={'/khai-bao-dot-danh-gia'} style={{color: 'black'}}>Khai báo đợt đánh giá</Link>
       ),
     },
   ];

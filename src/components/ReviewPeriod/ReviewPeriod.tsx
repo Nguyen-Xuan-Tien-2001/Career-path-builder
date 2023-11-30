@@ -1,7 +1,6 @@
 import { Row, Col, Input, Select, Button, Modal, Space, DatePicker, DatePickerProps, Table } from 'antd';
 import './ReviewPeriod.css'
 import { useState } from 'react';
-import Footer from '../Footer/Footer';
 import { ColumnsType } from 'antd/es/table';
 const ReviewPeriod = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -289,7 +288,6 @@ const ReviewPeriod = () => {
                     </Row>
                 </div>
             </Modal>
-            <Footer />
         </div>
     )
 }
