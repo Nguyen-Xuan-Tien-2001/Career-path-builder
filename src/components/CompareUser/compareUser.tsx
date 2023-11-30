@@ -99,7 +99,7 @@ function CompareUser() {
                                     222037 - Nguyễn Chí Lợi
                                 </div>
                                 <div className='userid-name'>
-                                    Font-End Level 1
+                                    Front-End Level 1
                                 </div>
                                 <div className='userid-name underlined'>
                                     HRM - Báo cáo nội bộ
@@ -129,7 +129,7 @@ function CompareUser() {
                                 227358 - Nguyễn Xuân Tiến
                             </div>
                             <div className='userid-name'>
-                                Font-End Level 1
+                                Front-End Level 1
                             </div>
                             <div className='userid-name underlined'>
                                 HRM - Báo cáo nội bộ
