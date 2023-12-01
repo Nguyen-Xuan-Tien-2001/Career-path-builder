@@ -2,9 +2,18 @@ import { Col, Form, Row } from 'antd';
 import './employeeReviewInformation.css'
 import TableERI from './tableEmployeeReviewInformation';
 import TableERIO from './tableEmployeeReviewInformationOrther';
+import {
+    HomeOutlined,
+    CaretRightOutlined
+} from '@ant-design/icons';
 function EmployeeReviewInformation() {
     return (
         <>
+            <div className='review_header'>
+                <HomeOutlined className='icon_home' />
+                <CaretRightOutlined className='icon_navigateNext' />
+                <span>Thông tin nhân viên đánh giá</span>
+            </div>
             <div className='information'>
                 <div className='information-user'>
                     <h1>Thông tin nhân viên đánh giá</h1>
@@ -23,14 +32,14 @@ function EmployeeReviewInformation() {
                                 Kì 1
                             </Col>
                         </Row>
-                        <Row justify={'center'} gutter={[16, 0]} style={{ marginTop: 15 }}>
+                        <Row justify={'center'} gutter={[16, 0]}>
                             <Col className='information-css'>
                                 Level:
                             </Col>
-                            <Col span={2} className='information-css'>
+                            <Col span={3} className='information-css'>
                                 Front-End Level 1
                             </Col>
-                            <Col className='information-css' style={{ paddingLeft: 125 }}>
+                            <Col className='information-css' style={{ marginLeft: 25 }}>
                                 Kết quả:
                             </Col>
                             <Col className='information-css'>
@@ -43,7 +52,7 @@ function EmployeeReviewInformation() {
                         <TableERI />
                     </div>
                     <div className='orther'>
-                        <TableERIO/>
+                        <TableERIO />
                     </div>
                 </div>
             </div>

@@ -12,6 +12,7 @@ import {
 } from '@ant-design/icons';
 
 import './ReviewPeriod.scss'
+import ButtonBase from '../ButtonBase/ButtonBase';
 
 const ReviewPeriod = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,9 +118,9 @@ const ReviewPeriod = () => {
             fixed: 'right',
             width: 100,
             render: () => <Space direction='vertical'>
-                <Button className='btn_table btn_edit' type='primary'><EditOutlined /> Sửa</Button>
-                <Button className='btn_table btn_detail' type='primary'><IssuesCloseOutlined />Chi tiết</Button>
-                <Button className='btn_table btn_delete' type='primary'><CloseOutlined />Xoá</Button>
+                <ButtonBase label='Sửa' icon={<EditOutlined />} className={'btn_edit'}/>
+                <ButtonBase label='Chi tiết' icon={<IssuesCloseOutlined />} className={'btn_detail'}/>
+                <ButtonBase label='Xóa' icon={<CloseOutlined />} className={'btn_delete'}/>
             </Space>,
         },
     ];
@@ -217,8 +218,8 @@ const ReviewPeriod = () => {
                         </Col>
                     </Row>
                     <div className='review_btn'>
-                        <Button type="primary"><SearchOutlined />Tìm kiếm</Button>
-                        <Button className='btn_add' onClick={showModal} type="primary"><PlusOutlined />Khai báo mới</Button>
+                        <ButtonBase icon={<SearchOutlined />} label='Tìm kiếm' />
+                        <ButtonBase onClick={showModal} icon={<PlusOutlined />} className='btn_add' label='Khai báo mới' />
                     </div>
                 </div>
                 <div className='review_data'>
