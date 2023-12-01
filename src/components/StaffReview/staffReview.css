@@ -78,6 +78,33 @@
     cursor: pointer;    
 }
 
+.staff-review_form-item-modal-title{
+    text-transform: uppercase;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+    text-align: center;
+    color: #055586;
+    font-weight: 700;
+    font-size: large;
+}
+
+.staff-review_form-item-modal-subtitle{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.staff-review_form-item-modal-name{
+    font-weight: 600;
+    font-style: italic;
+    margin: 0rem 0.5rem;
+}
+
+.staff-review_form-item-modal-note{
+    font-size: x-small;
+    font-style: italic;
+}
+
+
 .staff-review_form-item-input{
     display: grid;
     grid-template-columns: 20% 80%;

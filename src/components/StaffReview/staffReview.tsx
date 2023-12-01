@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
-import { Button, Select, Input, Tooltip } from 'antd';
+import { Button, Select, Input, Tooltip, Modal } from 'antd';
 import { FormOutlined, InfoCircleFilled, CloseOutlined, CheckOutlined } from '@ant-design/icons';
 
 import "./staffReview.css";
+import TableInfo from './tableInfo';
 
 const StaffReview: React.FC = () => {
 
     const [isShowForm, setIsShowForm] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { TextArea } = Input;
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     const onChange = (value: string) => {
         console.log(`selected ${value}`);
@@ -93,9 +103,49 @@ const StaffReview: React.FC = () => {
                                     title={'Xem mô tả tiêu chí'}
                                     color='blue'
                                 >
-                                    <InfoCircleFilled className='staff-review_form-item-title-info' />
+                                    <InfoCircleFilled
+                                        className='staff-review_form-item-title-info'
+                                        onClick={showModal}
+                                    />
                                 </Tooltip>
                             </div>
+                            <Modal
+                                open={isModalOpen}
+                                width={1500}
+                                style={{ padding: 50 }}
+                                onCancel={handleCancel}
+                                footer={
+                                    <Button
+                                        key="close"
+                                        type='primary'
+                                        danger
+                                        icon={<CloseOutlined />}
+                                        onClick={handleCancel}
+                                    >
+                                        Đóng
+                                    </Button>
+                                }
+                            >
+                                <div>
+                                    <div className='staff-review_form-item-modal-title'>
+                                        Mô tả
+                                    </div>
+                                    <div className='staff-review_form-item-modal-subtitle'>
+                                        <span>
+                                            Tiêu chí:
+                                        </span>
+                                        <span className='staff-review_form-item-modal-name'>
+                                            Tên tiêu chí
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <div className='staff-review_form-item-modal-note'>
+                                            *Bảng mô tả tiêu chí
+                                        </div>
+                                        <TableInfo />
+                                    </div>
+                                </div>
+                            </Modal>
                             <div className='staff-review_form-item-input'>
                                 <span>
                                     Điểm đánh giá:
