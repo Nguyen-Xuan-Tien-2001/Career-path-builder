@@ -1,5 +1,6 @@
 import { Row, Col, Select, Button, Typography, Form } from 'antd';
 import './compareUser.css'
+import ButtonBase from '../ButtonBase/ButtonBase';
 function CompareUser() {
     return (
         <>
@@ -52,7 +53,7 @@ function CompareUser() {
                                     </Row>
                                 </Col>
                                 <Col xl={5} lg={6} md={8} sm={12} xs={24}>
-                                    <Button type='primary' size='large'>So sánh</Button>
+                                    <ButtonBase className={'btn_detail'} label='So sánh'/>
                                 </Col>
                             </Row>
                         </Form>
