@@ -1,20 +1,30 @@
-import { Row, Col, Select, Button, Typography, Form } from 'antd';
+import { Row, Col, Select,  Typography, Form } from 'antd';
 import './compareUser.css'
 import ButtonBase from '../ButtonBase/ButtonBase';
+import {
+    HomeOutlined,
+    CaretRightOutlined
+} from '@ant-design/icons';
+
 function CompareUser() {
     return (
         <>
+            <div className='review_header'>
+                <HomeOutlined className='icon_home' />
+                <CaretRightOutlined className='icon_navigateNext' />
+                <span>So sánh chi tiết nhân viên</span>
+            </div>
             <div className="compareuser">
                 <div className="compareuser-information">
                     <div className="compare">
                         <Form>
                             <h1>So sánh chi tiết hai nhân viên:</h1>
                             <Row gutter={[16, 0]}>
-                                <Col xl={8} lg={6} md={8} sm={12} xs={24}>
+                                <Col xl={6} lg={6} md={8} sm={12} xs={24}>
                                     <Row>
                                         <Typography.Title level={5} style={{ margin: 0 }}>Đợt đánh giá:</Typography.Title>
                                         <Form.Item name="evaluationsession" style={{ marginLeft: 15 }} >
-                                            <Select placeholder='Chọn đợt đánh giá' style={{ width: 250 }} options={[
+                                            <Select placeholder='Chọn đợt đánh giá' style={{ width: 200 }} options={[
                                                 {
                                                     value: '1',
                                                     label: 'Đợt 1',
@@ -52,8 +62,8 @@ function CompareUser() {
                                         </Form.Item>
                                     </Row>
                                 </Col>
-                                <Col xl={4} lg={6} md={8} sm={12} xs={24}>
-                                    <ButtonBase className={'btn_detail'} label='So sánh'/>
+                                <Col xl={4} lg={6} md={8} sm={12} xs={24} style={{bottom: 5}}>
+                                    <ButtonBase className={'btn_detail'} label='So sánh' />
                                 </Col>
                             </Row>
                         </Form>

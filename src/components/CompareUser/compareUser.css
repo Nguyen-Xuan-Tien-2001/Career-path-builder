@@ -4,6 +4,9 @@
     background-color: #F0F2F5;
     padding-top: 20px;
 }
+.review_header{
+    margin-left: 20px;
+}
 .compareuser .compareuser-information{
     background-color: white;
     border-radius: 10px;
