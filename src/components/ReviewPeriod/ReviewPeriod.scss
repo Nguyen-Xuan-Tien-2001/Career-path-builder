@@ -1,0 +1,97 @@
+.review{
+    width: 100%;
+    background-color: #F0F2F5;
+}
+.review_container{
+    background-color: #F0F2F5;
+    margin: 0 20px;
+}
+.review_header{
+    padding-top: 10px;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    .icon_home svg{
+        color: #8C8C8C;
+        background-color: #fff;
+        border-radius: 8px;
+        width: 30px;
+        height: 30px;
+        padding: 10px;
+    }
+    .icon_navigateNext{
+        color: #8C8C8C;
+    
+    }
+}
+.review_filter{
+    margin-top: 10px;
+    height: 150px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    position: relative;
+}
+.review_btn{
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    gap: 28px;
+    
+}
+.review_btn button {
+    height: 40px;
+    width: 150px;
+    border-radius: 8px;
+}
+.review_data{
+    background-color: #FFFFFF;
+    margin-top: 10px;
+    border-radius: 10px;
+    padding: 20px;
+
+}
+.review_modal{
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.btn_table{
+    width: 112px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn_edit{
+    background-color: rgba(254, 157, 43, 0.84);
+    &:hover{
+            background-color: rgba(254, 157, 43, 0.84) !important;
+            opacity: 0.6;
+    }
+}
+.btn_detail{
+    background-color: rgba(24, 144, 255, 1);
+    &:hover{
+            background-color: rgba(24, 144, 255, 1) !important;
+            opacity: 0.6;
+    }
+}
+.btn_delete{
+    background-color: rgba(246, 71, 71, 0.84);
+    &:hover{
+            background-color: rgba(246, 71, 71, 0.84) !important;
+            opacity: 0.6;
+    }
+}
+.btn_add{
+    background-color: rgba(29, 170, 43, 1);
+    &:hover{
+            background-color: rgba(29, 170, 43, 1) !important;
+            opacity: 0.6;
+    }
+}
