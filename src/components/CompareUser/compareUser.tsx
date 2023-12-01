@@ -10,11 +10,11 @@ function CompareUser() {
                         <Form>
                             <h1>So sánh chi tiết hai nhân viên:</h1>
                             <Row gutter={[16, 0]}>
-                                <Col xl={8} lg={6} md={8} sm={12} xs={24}>
+                                <Col xl={6} lg={6} md={8} sm={12} xs={24}>
                                     <Row>
                                         <Typography.Title level={5} style={{ margin: 0 }}>Đợt đánh giá:</Typography.Title>
                                         <Form.Item name="evaluationsession" style={{ marginLeft: 15 }} >
-                                            <Select placeholder='Chọn đợt đánh giá' style={{ width: 250 }} options={[
+                                            <Select placeholder='Chọn đợt đánh giá' style={{ width: 200 }} options={[
                                                 {
                                                     value: '1',
                                                     label: 'Đợt 1',
