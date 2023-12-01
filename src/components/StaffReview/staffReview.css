@@ -1,0 +1,26 @@
+.staff_review-root {
+    background-color: #f0f2f5;
+    max-width: 100%;
+    padding: 1rem 2rem;
+}
+
+.staff_info-container {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    padding: 1.5rem 3rem;
+}
+
+.staff_info-text {
+    text-decoration: underline;
+    color: #055586;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.staff_info-select {
+    margin: auto;
+}
+
+.staff_review-container {
+    background-color: #ffffff;
+}
