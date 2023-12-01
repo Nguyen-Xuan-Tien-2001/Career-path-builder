@@ -1,26 +1,41 @@
-.staff_review-root {
+.staff-review_root {
     background-color: #f0f2f5;
     max-width: 100%;
     padding: 1rem 2rem;
 }
 
-.staff_info-container {
+.staff-info_container {
     background-color: #ffffff;
     border-radius: 0.5rem;
     padding: 1.5rem 3rem;
 }
 
-.staff_info-text {
+.staff-info_text {
     text-decoration: underline;
     color: #055586;
     font-size: 1.5rem;
     font-weight: bold;
 }
 
-.staff_info-select {
-    margin: auto;
+.staff-info_select-container {
+margin-left: 15rem;}
+
+.staff-info_review-btn {
+    text-align: center;
+    margin: 0.5rem 0rem;
 }
 
-.staff_review-container {
+.staff-review_container {
+    border-radius: 0.5rem;
     background-color: #ffffff;
+    padding: 1.5rem 3rem;
+    margin-top: 1rem;
+}
+
+.staff-review_header {
+    color: #055586;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
 }
