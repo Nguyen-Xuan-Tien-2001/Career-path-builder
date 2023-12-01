@@ -9,6 +9,7 @@
     top: 0;
     z-index: 10;
     background: linear-gradient(to right, rgb(5, 85, 134) 0%, rgb(65, 132, 190) 100%);
+    padding: 0 20px;
 }
 
 .LogoHome {
