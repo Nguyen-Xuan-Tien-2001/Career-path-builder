@@ -2,7 +2,7 @@ import 'react';
 import Header from "./components/Header/Header.tsx";
 import Rout from './components/Rout/rout.tsx';
 import { BrowserRouter } from 'react-router-dom';
-import { Footer } from 'antd/es/layout/layout';
+import Footer from './components/Footer/Footer.tsx';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <BrowserRouter>
         <Header />
         <Rout />
-        <Footer></Footer>
+        <Footer/>
       </BrowserRouter>
 
     </>
