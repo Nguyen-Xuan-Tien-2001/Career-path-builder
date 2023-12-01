@@ -9,6 +9,7 @@ const StaffReview: React.FC = () => {
 
     const [isShowForm, setIsShowForm] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState('')
 
     const { TextArea } = Input;
 
@@ -23,6 +24,7 @@ const StaffReview: React.FC = () => {
     const onChange = (value: string) => {
         console.log(`selected ${value}`);
         setIsShowForm(false)
+        setSelectedUser(value)
     };
 
     const onSearch = (value: string) => {
@@ -34,7 +36,9 @@ const StaffReview: React.FC = () => {
 
     const handleShowForm = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault()
-        setIsShowForm(true)
+        if (selectedUser) {
+            setIsShowForm(true)
+        }
     }
 
     return (<>
