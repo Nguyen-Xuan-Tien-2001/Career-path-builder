@@ -10,7 +10,7 @@ function CompareUser() {
                         <Form>
                             <h1>So sánh chi tiết hai nhân viên:</h1>
                             <Row gutter={[16, 0]}>
-                                <Col xl={5} lg={6} md={8} sm={12} xs={24}>
+                                <Col xl={8} lg={6} md={8} sm={12} xs={24}>
                                     <Row>
                                         <Typography.Title level={5} style={{ margin: 0 }}>Đợt đánh giá:</Typography.Title>
                                         <Form.Item name="evaluationsession" style={{ marginLeft: 15 }} >
@@ -31,7 +31,7 @@ function CompareUser() {
                                         </Form.Item>
                                     </Row>
                                 </Col>
-                                <Col xl={8} lg={6} md={8} sm={12} xs={24}>
+                                <Col xl={10} lg={6} md={8} sm={12} xs={24}>
                                     <Row>
                                         <Typography.Title level={5} style={{ margin: 0 }}>Nhân viên:</Typography.Title>
                                         <Form.Item name="username_userid" style={{ marginLeft: 15 }}>
@@ -52,7 +52,7 @@ function CompareUser() {
                                         </Form.Item>
                                     </Row>
                                 </Col>
-                                <Col xl={5} lg={6} md={8} sm={12} xs={24}>
+                                <Col xl={4} lg={6} md={8} sm={12} xs={24}>
                                     <ButtonBase className={'btn_detail'} label='So sánh'/>
                                 </Col>
                             </Row>
