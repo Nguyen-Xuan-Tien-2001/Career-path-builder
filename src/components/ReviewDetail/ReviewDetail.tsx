@@ -3,6 +3,7 @@ import './ReviewDetail.scss'
 import { useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import {SearchOutlined, CloudUploadOutlined, HomeOutlined, CaretRightOutlined} from '@ant-design/icons';
+import ButtonBase from '../ButtonBase/ButtonBase';
 const ReviewDetail = () => {
     const styledFilterInput = {
         width: 300,
@@ -190,8 +191,8 @@ const ReviewDetail = () => {
                         </Col>
                     </Row>
                     <div className='review_btn'>
-                        <Button type="primary"><SearchOutlined />Tìm kiếm</Button>
-                        <Button onClick={showModal} style={{ backgroundColor: '#167F21' }} type="primary"><CloudUploadOutlined />Import</Button>
+                        <ButtonBase label={'Tìm kiếm'} icon={<SearchOutlined />}/>
+                        <ButtonBase className='btn_add' label={'Import'} icon={<CloudUploadOutlined />}/>
                     </div>
                 </div>
                 <div className='review_data'>

@@ -23,14 +23,14 @@ function EmployeeReviewInformation() {
                                 Kì 1
                             </Col>
                         </Row>
-                        <Row justify={'center'} gutter={[16, 0]} style={{ marginTop: 15 }}>
+                        <Row justify={'center'} gutter={[16, 0]}>
                             <Col className='information-css'>
                                 Level:
                             </Col>
-                            <Col span={2} className='information-css'>
+                            <Col span={3} className='information-css'>
                                 Front-End Level 1
                             </Col>
-                            <Col className='information-css' style={{ paddingLeft: 125 }}>
+                            <Col className='information-css'>
                                 Kết quả:
                             </Col>
                             <Col className='information-css'>
