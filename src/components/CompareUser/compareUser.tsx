@@ -1,9 +1,19 @@
-import { Row, Col, Select, Button, Typography, Form } from 'antd';
+import { Row, Col, Select,  Typography, Form } from 'antd';
 import './compareUser.css'
 import ButtonBase from '../ButtonBase/ButtonBase';
+import {
+    HomeOutlined,
+    CaretRightOutlined
+} from '@ant-design/icons';
+
 function CompareUser() {
     return (
         <>
+            <div className='review_header'>
+                <HomeOutlined className='icon_home' />
+                <CaretRightOutlined className='icon_navigateNext' />
+                <span>So sánh chi tiết nhân viên</span>
+            </div>
             <div className="compareuser">
                 <div className="compareuser-information">
                     <div className="compare">
@@ -52,8 +62,8 @@ function CompareUser() {
                                         </Form.Item>
                                     </Row>
                                 </Col>
-                                <Col xl={4} lg={6} md={8} sm={12} xs={24}>
-                                    <ButtonBase className={'btn_detail'} label='So sánh'/>
+                                <Col xl={4} lg={6} md={8} sm={12} xs={24} style={{bottom: 5}}>
+                                    <ButtonBase className={'btn_detail'} label='So sánh' />
                                 </Col>
                             </Row>
                         </Form>
