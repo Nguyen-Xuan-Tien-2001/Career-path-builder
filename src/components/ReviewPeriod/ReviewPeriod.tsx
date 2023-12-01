@@ -1,7 +1,18 @@
 import { Row, Col, Input, Select, Button, Modal, Space, DatePicker, DatePickerProps, Table } from 'antd';
-import './ReviewPeriod.css'
 import { useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
+import {
+    HomeOutlined,
+    SearchOutlined,
+    PlusOutlined,
+    EditOutlined,
+    IssuesCloseOutlined,
+    CloseOutlined,
+    CaretRightOutlined
+} from '@ant-design/icons';
+
+import './ReviewPeriod.scss'
+
 const ReviewPeriod = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -94,9 +105,9 @@ const ReviewPeriod = () => {
                             <a>Invite {value.pathname}</a>
                         </Space>
                     ))} */}
-                     <Space size="middle">
-                            <a>{_.pathname}</a>
-                        </Space>
+                    <Space size="middle">
+                        <a>{_.pathname}</a>
+                    </Space>
                 </>
             )
         },
@@ -106,9 +117,9 @@ const ReviewPeriod = () => {
             fixed: 'right',
             width: 100,
             render: () => <Space direction='vertical'>
-                <Button className='btn_table' style={{ backgroundColor: '#FE9D2B' }} type='primary'><span>Sửa</span></Button>
-                <Button className='btn_table' type='primary'>Chi tiết</Button>
-                <Button className='btn_table' type='primary' danger>Xoá</Button>
+                <Button className='btn_table btn_edit' type='primary'><EditOutlined /> Sửa</Button>
+                <Button className='btn_table btn_detail' type='primary'><IssuesCloseOutlined />Chi tiết</Button>
+                <Button className='btn_table btn_delete' type='primary'><CloseOutlined />Xoá</Button>
             </Space>,
         },
     ];
@@ -117,19 +128,21 @@ const ReviewPeriod = () => {
         <div className='review'>
             <div className='review_container'>
                 <div className='review_header'>
+                    <HomeOutlined className='icon_home' />
+                    <CaretRightOutlined className='icon_navigateNext' />
                     <span>Khai báo đợt đánh giá</span>
                 </div>
                 <div className='review_filter'>
                     <Row>
-                        <Col span={8}>
+                        <Col >
                             <Row>Tìm kiếm:</Row>
-                            <Input style={{ width: 250, marginTop: 10 }}
+                            <Input style={{ width: 300 + 'px', marginTop: 10, marginRight: '40px' }}
                                 placeholder="Nhập từ khoá để tìm kiếm" />
                         </Col>
-                        <Col span={8}>
+                        <Col >
                             <Row>Đợt đánh giá:</Row>
                             <Select
-                                style={{ width: 250, marginTop: 10 }}
+                                style={{ width: 300 + 'px', marginTop: 10, marginRight: '40px' }}
                                 placeholder="---Chọn đợt đánh giá---"
                                 optionFilterProp="children"
                                 filterOption={(input, option) => (option?.label ?? '').includes(input)}
@@ -167,7 +180,7 @@ const ReviewPeriod = () => {
                         <Col>
                             <Row>Lộ trình:</Row>
                             <Select
-                                style={{ width: 250, marginTop: 10 }}
+                                style={{ width: 300 + 'px', marginTop: 10, marginRight: '40px' }}
                                 placeholder="---Lộ trình---"
                                 optionFilterProp="children"
                                 filterOption={(input, option) => (option?.label ?? '').includes(input)}
@@ -204,13 +217,13 @@ const ReviewPeriod = () => {
                         </Col>
                     </Row>
                     <div className='review_btn'>
-                        <Button style={{ width: 120 }} type="primary">Tìm kiếm</Button>
-                        <Button onClick={showModal} style={{ width: 120, backgroundColor: '#167F21' }} type="primary">Khai báo mới</Button>
+                        <Button type="primary"><SearchOutlined />Tìm kiếm</Button>
+                        <Button className='btn_add' onClick={showModal} type="primary"><PlusOutlined />Khai báo mới</Button>
                     </div>
                 </div>
                 <div className='review_data'>
                     <div>
-                        <span style={{ color: '#055586' }}>Kết quả khai báo:</span>
+                        <span style={{ color: '#055586', fontSize: 30 + 'px' }}>Kết quả khai báo:</span>
                     </div>
                     <div>
                         <Table dataSource={dataSource} columns={columns} />
@@ -221,7 +234,10 @@ const ReviewPeriod = () => {
                 open={isModalOpen}
                 onOk={handleOk}
                 onCancel={handleCancel}
-                closeIcon={false}>
+                closeIcon={false}
+                okText="Lưu"
+                cancelText="Đóng"
+            >
                 <div className='review_modal'>
                     <Row>
                         <Col span={24}>
