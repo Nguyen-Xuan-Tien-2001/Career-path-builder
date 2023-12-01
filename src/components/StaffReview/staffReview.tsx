@@ -12,6 +12,7 @@ function StaffReview() {
                 </div>
                 <div className='staff_info-select'>
                     <div>
+
                         Nhân viên được đánh giá
                     </div>
                     <div>
@@ -21,6 +22,9 @@ function StaffReview() {
                 <div>
                     <Button type="primary">Chi tiết bài đánh giá</Button>
                 </div>
+            </div>
+            <div>
+                
             </div>
             <div className="staff_review-container">
 

@@ -1,0 +1,32 @@
+.information{
+    margin: 0;
+    width: 100%;
+    background-color: #F0F2F5;
+    padding-top: 20px;
+}
+.information-user{
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid white;
+    margin: 0 20px;
+}
+.information .information-user h1{
+    color: #055586;
+    text-align: center;
+    text-decoration: underline
+}
+.information .information-user .information-css{
+    font-size: 16px;
+    font-weight: 500;
+}
+.information .information-user h2{
+    color: #055586;
+    text-decoration: underline;
+    margin-left: 50px;
+}
+.self{
+    margin: 0 50px;
+}
+.orther{
+    margin: 50px;
+}
