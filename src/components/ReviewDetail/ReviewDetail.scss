@@ -1,0 +1,33 @@
+.review_detail{
+    width: 100%;
+    background-color: #F0F2F5;
+}
+.review_detail_container{
+    background-color: #F0F2F5;
+    margin: 0 20px;
+}
+.review_detail_filter{
+    margin-top: 10px;
+    height: 150px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    position: relative;
+}
+.review_btn{
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    gap: 28px;
+    
+}
+.review_btn button {
+    height: 40px;
+    width: 150px;
+    border-radius: 8px;
+}
+.review_data_title{
+    color: rgb(5, 85, 134);
+    font-size: 30px;
+}

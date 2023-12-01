@@ -550,7 +550,7 @@ function Map() {
             onNodeMouseEnter = {(e,obj)=>{handleOnMouseEnter(e,obj)}}
             fitView
         >
-            <Background />
+            <Background color="#000" />
             <Controls />
             <MiniMap />
             

@@ -9,7 +9,7 @@
     justify-content: center;
     align-items: flex-start;
 }
-span{
+.footer_content span{
     color: rgb(255, 255, 255);
     font-family: BeVietnamPro,sans-serif;
     font-size: 14px;

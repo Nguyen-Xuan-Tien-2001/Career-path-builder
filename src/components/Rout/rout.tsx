@@ -4,7 +4,7 @@ import StaffReview from "../StaffReview/staffReview";
 import CompareUser from "../CompareUser/compareUser";
 import EmployeeReviewInformation from "../EmployeeReviewInformation/employeeReviewInformation";
 import ReviewPeriod from "../ReviewPeriod/ReviewPeriod";
-
+import ReviewDetail from "../ReviewDetail/ReviewDetail"
 function Rout() {
     return (
         <>
@@ -14,7 +14,7 @@ function Rout() {
                 <Route path={'/thong-tin-nhan-vien-danh-gia'} element={<EmployeeReviewInformation />}/>
                 <Route path={'/danh-gia-nhan-vien'} element={<StaffReview/>}/>
                 <Route path={'/khai-bao-dot-danh-gia'} element={<ReviewPeriod/>}/>
-                <Route path={'/khai-bao-dot-danh-gia/chi-tiet-dot-danh-gia'}/>
+                <Route path={'/khai-bao-dot-danh-gia/chi-tiet-dot-danh-gia'} element={<ReviewDetail/>}/>
             </Routes>
         </>
     )
