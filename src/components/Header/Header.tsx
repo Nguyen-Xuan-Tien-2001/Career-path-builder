@@ -32,12 +32,10 @@ const Header = () => {
       <div className='nav__menu'>
         <ul>
           <Dropdown menu={{ items }} placement="bottomLeft" arrow>
-            <li><span><AppstoreOutlined /></span>Office
+            <li><span><AppstoreOutlined /></span>Lộ trình phát triển nghề nghiệp
 
             </li>
           </Dropdown>
-          <li><span><UserOutlined /></span>HRM</li>
-          <li><span><DollarOutlined /></span>Payroll</li>
 
         </ul>
       </div>
