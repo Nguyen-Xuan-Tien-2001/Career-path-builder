@@ -1,5 +1,5 @@
 import { Button, Col, Input, Row, Select, Space, Table} from 'antd'
-import './ReviewDetail.css'
+import './ReviewDetail.scss'
 import { useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import {SearchOutlined, CloudUploadOutlined, HomeOutlined, CaretRightOutlined} from '@ant-design/icons';
