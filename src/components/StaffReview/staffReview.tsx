@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Select, Input, Tooltip, Modal } from 'antd';
-import { FormOutlined, InfoCircleFilled, CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import { FormOutlined, InfoCircleFilled, CloseOutlined, CheckOutlined, HomeOutlined, CaretRightOutlined } from '@ant-design/icons';
 
 import "./staffReview.css";
 import TableInfo from './tableInfo';
@@ -43,6 +43,11 @@ const StaffReview: React.FC = () => {
 
     return (<>
         <div className="staff-review_root">
+        <div className='review_header'>
+                <HomeOutlined className='icon_home' />
+                <CaretRightOutlined className='icon_navigateNext' />
+                <span>Thông tin nhân viên đánh giá</span>
+            </div>
             <div className="staff-info_container">
                 <div className="staff-info_text">
                     Đánh giá nhân viên
