@@ -23,6 +23,12 @@ const Header = () => {
         <Link to={'/khai-bao-dot-danh-gia'} style={{color: 'black'}}>Khai báo đợt đánh giá</Link>
       ),
     },
+    {
+      key: '4',
+      label: (
+        <Link to={'/danh-gia-nhan-vien'} style={{color: 'black'}}>Đánh giá nhân viên</Link>
+      ),
+    },
   ];
   return (
     <div className='header__container'>
