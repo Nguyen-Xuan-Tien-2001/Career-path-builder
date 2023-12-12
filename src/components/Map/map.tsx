@@ -524,10 +524,125 @@ const initEdges = [
     },
 ];
 
+const initLevels =  [{
+    levelid: 1,
+    nodeid: 1,
+    levelname: "Huong Dev",
+    shortname: "HuongDev",
+    cycles: 6,
+    description: "aaa",
+    parentid: null,
+    pathid: 1,
+    isold: false
+  },
+  {
+    levelid: 2,
+    nodeid: 2,
+    levelname: "FE Level1",
+    shortname: "FE1",
+    cycles: 6,
+    description: "bbb",
+    parentid: 1,
+    pathid: 1,
+    isold: false
+  },
+  {
+    levelid: 3,
+    nodeid: 3,
+    levelname: "FE2",
+    shortname: "FE Level2",
+    cycles: 6,
+    description: "ccc",
+    parentid: 2,
+    pathid: 1,
+    isold: false
+  },
+  {
+    levelid: 4,
+    nodeid: 4,
+    levelname: "FE3",
+    shortname: "FeLevel3",
+    cycles: 6,
+    description: "aaa",
+    parentid: 3,
+    pathid: 1,
+    isold: false
+  },
+  {
+    levelid: 5,
+    nodeid: 5,
+    levelname: "FS1",
+    shortname: "FSLevel1",
+    cycles: 6,
+    description: "aaa",
+    parentid: 1,
+    pathid: 1,
+    isold: false
+  },
+  {
+    levelid: 6,
+    nodeid: 6,
+    levelname: "FS2",
+    shortname: "FSLevel2",
+    cycles: 6,
+    description: "aaa",
+    parentid: 5,
+    pathid: 1,
+    isold: false
+  },
+  {
+    levelid: 7,
+    nodeid: 7,
+    levelname: "FS3",
+    shortname: "FSLevel3",
+    cycles: 6,
+    description: "aaa",
+    parentid: 6,
+    pathid: 1,
+    isold: false
+  },
+  {
+    levelid: 8,
+    nodeid: 8,
+    levelname: "MasterDev",
+    shortname: "MasterDev",
+    cycles: 6,
+    description: "aaa",
+    parentid: 4,
+    pathid: 1,
+    isold: false
+  },
+  {
+    levelid: 11,
+    nodeid: 9,
+    levelname: "PH",
+    shortname: "PH",
+    cycles: 6,
+    description: "aaa",
+    parentid: 8,
+    pathid: 1,
+    isold: false
+  },
+  {
+    levelid: 9,
+    nodeid: 8,
+    levelname: "MasterDev",
+    shortname: "MasterDev",
+    cycles: 6,
+    description: "aaa",
+    parentid: 7,
+    pathid: 1,
+    isold: false
+  }
+];
 
 function Map() {
     const [nodes, , onNodesChange] = useNodesState(initNodes);
     const [edges, , onEdgesChange] = useEdgesState(initEdges);
+
+    const Levels= initLevels.map((level) =>{
+        return
+    })
 
     //Hàm xử lý khi click vào một NODE bất kỳ trên lộ trình
     const handleOnNodeClick = (e:any,obj:any) => {
