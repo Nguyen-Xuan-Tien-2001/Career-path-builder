@@ -2,38 +2,41 @@ import { Col, Input, Row, Select, Space, Table, Modal } from 'antd'
 import './ReviewDetail.scss'
 import { useState } from 'react';
 
+
 import { SearchOutlined, CloudUploadOutlined, HomeOutlined, CaretRightOutlined } from '@ant-design/icons';
 import { ExcelRenderer } from 'react-excel-renderer';
 
 import ButtonBase from '../ButtonBase/ButtonBase';
 
-interface IDataFile{
-    path?:string,
-    userReview?:string,
-    userReviewed?:string
+interface IDataFile {
+    path?: string,
+    userReview?: string,
+    userReviewed?: string
 }
 
-const initData=[
+const initData = [
     {
-         assessorid:"Chưa có dữ liệu",
-         userid:"Chưa có dữ liệu",
-         ratingcoefficient:"Chưa có dữ liệu"
+        assessorid: "Chưa có dữ liệu",
+        userid: "Chưa có dữ liệu",
+        ratingcoefficient: "Chưa có dữ liệu"
     }
-]
+];
+
+
 
 const ReviewDetail = () => {
     const styledFilterInput = {
         width: 300,
         marginTop: 10
     }
-  
-    
-   
+
+
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [dataExcel, setDataExcel] = useState<Array<IDataFile>>(initData);
     const [title, setTitle] = useState([]);
     const [rows, setRows] = useState([]);
-
+    const reviewid = 1;
 
 
     const showModal = () => {
@@ -46,21 +49,22 @@ const ReviewDetail = () => {
             (title.map((title, j) => {
                 return temp = {
                     ...temp,
-                    [title]: row[j]
+                    [title]: row[j],
+                    reviewid: reviewid
                 }
             }));
-
-            console.log(temp)
             return (temp);
         })
 
-        setDataExcel(data)
+        setDataExcel(data);
+        setIsModalOpen(false);
     }
-    
+
     const handleCancel = () => {
         setIsModalOpen(false);
     }
     const fileHandler = (event: any) => {
+        console.log(event.target.files[0]);
         let fileObj = event.target.files[0];
 
         //just pass the fileObj as parameter
@@ -87,7 +91,7 @@ const ReviewDetail = () => {
             title: 'Mã Nhân Viên',
             dataIndex: 'userid',
             key: 'userid',
-            
+
         },
         {
             title: 'Hệ số đánh giá',
@@ -215,8 +219,7 @@ const ReviewDetail = () => {
                 cancelText="Đóng"
             >
                 <div className='review_modal'>
-                    <input type="file" onChange={fileHandler} style={{ "padding": "10px" }} />
-
+                    <Input type="file" onChange={fileHandler} accept=".xlsx,.xls" style={{ "padding": "10px" }} />
                 </div>
             </Modal>
         </div>
