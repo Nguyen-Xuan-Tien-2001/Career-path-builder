@@ -27,7 +27,14 @@
     margin-top: 1.5rem;
 }
 
-.staff-info_select-text{
+.staff-info_select-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 2.5rem;
+}
+
+.staff-info_select-text {
     margin-top: 0.75rem;
 }
 
@@ -52,22 +59,22 @@
     margin: 0.5rem 0rem;
 }
 
-.staff-review_form{
+.staff-review_form {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 1rem;
 }
 
-.staff-review_form-item{
+.staff-review_form-item {
     margin: 0.5rem 0rem;
 }
 
-.staff-review_form-item-title{
+.staff-review_form-item-title {
     margin: 1rem 0rem;
 }
 
-.staff-review_form-item-title-name{
+.staff-review_form-item-title-name {
     color: #055586;
     font-style: italic;
     font-weight: 600;
@@ -75,11 +82,11 @@
     font-size: large;
 }
 
-.staff-review_form-item-title-info:hover{
-    cursor: pointer;    
+.staff-review_form-item-title-info:hover {
+    cursor: pointer;
 }
 
-.staff-review_form-item-modal-title{
+.staff-review_form-item-modal-title {
     text-transform: uppercase;
     margin-top: 1rem;
     margin-bottom: 0.3rem;
@@ -89,24 +96,23 @@
     font-size: large;
 }
 
-.staff-review_form-item-modal-subtitle{
+.staff-review_form-item-modal-subtitle {
     text-align: center;
     margin-bottom: 1rem;
 }
 
-.staff-review_form-item-modal-name{
+.staff-review_form-item-modal-name {
     font-weight: 600;
     font-style: italic;
     margin: 0rem 0.5rem;
 }
 
-.staff-review_form-item-modal-note{
+.staff-review_form-item-modal-note {
     font-size: x-small;
     font-style: italic;
 }
 
-
-.staff-review_form-item-input{
+.staff-review_form-item-input {
     display: grid;
     grid-template-columns: 20% 80%;
     margin: 1.5rem 0rem;
@@ -114,7 +120,7 @@
     margin-left: 3rem;
 }
 
-.staff-review_btn{
+.staff-review_btn {
     margin: 0.5rem 0rem;
     text-align: center;
 }
