@@ -1,12 +1,27 @@
-import { Row, Col, Select,  Typography, Form } from 'antd';
+import { Row, Col, Select, Typography, Form } from 'antd';
 import './compareUser.css'
 import ButtonBase from '../ButtonBase/ButtonBase';
 import {
     HomeOutlined,
     CaretRightOutlined
 } from '@ant-design/icons';
+import { useState } from 'react';
 
 function CompareUser() {
+    const [form] = Form.useForm();
+    const [selectedValues, setSelectedValues] = useState([]);
+
+    const handleSelect = (selectedOptions: any) => {
+        form.setFieldsValue({
+            username_userid: form.getFieldValue('username_userid').slice(0, 2),     
+        });
+        if (selectedOptions.length > 2) {
+            setSelectedValues(selectedOptions.slice(0, 2));
+          } else {
+            setSelectedValues(selectedOptions);
+          }
+    };
+        
     return (
         <>
             <div className='review_header'>
@@ -17,7 +32,7 @@ function CompareUser() {
             <div className="compareuser">
                 <div className="compareuser-information">
                     <div className="compare">
-                        <Form>
+                        <Form form={form}>
                             <h1>So sánh chi tiết hai nhân viên:</h1>
                             <Row gutter={[16, 0]}>
                                 <Col xl={6} lg={6} md={8} sm={12} xs={24}>
@@ -45,7 +60,7 @@ function CompareUser() {
                                     <Row>
                                         <Typography.Title level={5} style={{ margin: 0 }}>Nhân viên:</Typography.Title>
                                         <Form.Item name="username_userid" style={{ marginLeft: 15 }}>
-                                            <Select placeholder='Chọn nhân viên cần so sánh' style={{ width: 500 }} mode="multiple" options={[
+                                            <Select placeholder='Chọn nhân viên cần so sánh' onChange={handleSelect} value={selectedValues} style={{ width: 500 }} mode={'tags'} options={[
                                                 {
                                                     value: '1',
                                                     label: '222037-Nguyễn Chí Lợi',
@@ -62,7 +77,7 @@ function CompareUser() {
                                         </Form.Item>
                                     </Row>
                                 </Col>
-                                <Col xl={4} lg={6} md={8} sm={12} xs={24} style={{bottom: 5}}>
+                                <Col xl={4} lg={6} md={8} sm={12} xs={24} style={{ bottom: 5 }}>
                                     <ButtonBase className={'btn_detail'} label='So sánh' />
                                 </Col>
                             </Row>
