@@ -1,4 +1,5 @@
 import { Button } from 'antd';
+import "./ButtonBase.scss"
 
 interface ButtonBaseIProps {
     className?: string | "btn_add" | "btn_delete" | "btn_detail" | "btn_edit";
