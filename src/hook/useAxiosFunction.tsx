@@ -4,12 +4,12 @@ const useAxiosFunction = () => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [controller, setController] = useState();
+  const [controller, setController] = useState<any>();
 
-  const axiosFetch = useCallback(async (configObj) => {
+  const axiosFetch = useCallback(async (configObj: any) => {
     const { axiosInstance, method, url, requestConfig = {} } = configObj;
-   const token = localStorage.getItem("token");    
-   
+    const token = localStorage.getItem("token");
+
     try {
       setLoading(true);
       const ctrl = new AbortController();
@@ -22,12 +22,12 @@ const useAxiosFunction = () => {
         signal: ctrl.signal,
         params: requestConfig ? requestConfig.params : null,
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setResponse(res.data);
       setError(null);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.response);
     } finally {
       setLoading(false);
