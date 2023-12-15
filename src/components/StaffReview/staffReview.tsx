@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Select, Input, Tooltip, Modal } from "antd";
 import {
     FormOutlined,
@@ -12,11 +12,26 @@ import {
 import "./staffReview.css";
 import TableInfo from "./tableInfo";
 
+import {
+    GetAllReview,
+    GetAllUserByAssessoridReviewid,
+} from "./../../ApiServices/StaffReviewApi";
+
+interface IReview {
+    pathid: number;
+    reviewid: number;
+    reviewname: string;
+    timeend: string;
+    timestart: string;
+}
+
 const StaffReview: React.FC = () => {
-    const [isShowForm, setIsShowForm] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState("");
-    const [selectedReview, setSelectedReview] = useState("");
+    const [isShowForm, setIsShowForm] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [selectedUser, setSelectedUser] = useState<number>();
+    const [selectedReview, setSelectedReview] = useState<number>();
+    const [reviews, setReviews] = useState([]);
+    const [users, setUsers] = useState([]);
 
     const { TextArea } = Input;
 
@@ -30,20 +45,24 @@ const StaffReview: React.FC = () => {
 
     const onChange = (value: string) => {
         setIsShowForm(false);
-        setSelectedUser(value);
-    };
-
-    const onSearch = (value: string) => {
-        console.log("search:", value);
+        setSelectedUser(parseInt(value));
     };
 
     const onChangeReview = (value: string) => {
         setIsShowForm(false);
-        setSelectedReview(value);
-    };
-
-    const onSearchReview = (value: string) => {
-        console.log("search:", value);
+        setSelectedReview(parseInt(value));
+        console.log("value", value);
+        async function fetchData() {
+            if (parseInt(value)) {
+                const res = await GetAllUserByAssessoridReviewid(
+                    1,
+                    parseInt(value)
+                );
+                setUsers(res?.data);
+            }
+        }
+        fetchData();
+        console.log("users", users);
     };
 
     const filterOption = (
@@ -57,6 +76,29 @@ const StaffReview: React.FC = () => {
             setIsShowForm(true);
         }
     };
+
+    useEffect(() => {
+        const currentDate = new Date();
+        async function fetchData() {
+            const res = await GetAllReview();
+            const reviewTemp = res?.data?.data?.filter(
+                (item: IReview) =>
+                    new Date(item.timestart) <= currentDate &&
+                    new Date(item.timeend) >= currentDate
+            );
+            setReviews(reviewTemp);
+        }
+        fetchData();
+    }, []);
+
+    // useEffect(() => {
+    //     // const path = reviews?.find((item) => item.reviewid === selectedReview);
+    //     // if (path) {
+    //     //     const criterials = GetAllCriterialByPath(path.pathid);
+    //     //     console.log("criterials", criterials);
+    //     // }
+
+    // }, [selectedReview]);
 
     return (
         <>
@@ -80,22 +122,13 @@ const StaffReview: React.FC = () => {
                                     placeholder="--Chọn đợt đánh giá--"
                                     optionFilterProp="children"
                                     onChange={onChangeReview}
-                                    onSearch={onSearchReview}
                                     filterOption={filterOption}
-                                    options={[
-                                        {
-                                            value: "Đánh giá khối CNTT quý 1/2024",
-                                            label: "Đánh giá khối CNTT quý 1/2024",
-                                        },
-                                        {
-                                            value: "Đánh giá khối Hành Chính - Nhân sự quý 1/2024",
-                                            label: "Đánh giá khối Hành Chính - Nhân sự quý 1/2024",
-                                        },
-                                        {
-                                            value: "Đánh giá khối Kinh doanh quý 1/2024",
-                                            label: "Đánh giá khối Kinh doanh quý 1/2024",
-                                        },
-                                    ]}
+                                    options={reviews?.map((item: IReview) => {
+                                        return {
+                                            value: item.reviewid.toString(),
+                                            label: item.reviewname,
+                                        };
+                                    })}
                                 />
                             </div>
                             <div>
@@ -108,19 +141,18 @@ const StaffReview: React.FC = () => {
                                     placeholder="--Chọn nhân viên--"
                                     optionFilterProp="children"
                                     onChange={onChange}
-                                    onSearch={onSearch}
                                     filterOption={filterOption}
                                     options={[
                                         {
-                                            value: "222037 - Nguyễn Chí Lợi",
+                                            value: "222037",
                                             label: "222037 - Nguyễn Chí Lợi",
                                         },
                                         {
-                                            value: "227358 - Nguyễn Xuân Tiến",
+                                            value: "227358",
                                             label: "227358 - Nguyễn Xuân Tiến",
                                         },
                                         {
-                                            value: "227451 - Đạt Villa",
+                                            value: "227451",
                                             label: "227451 - Đạt Villa",
                                         },
                                     ]}
