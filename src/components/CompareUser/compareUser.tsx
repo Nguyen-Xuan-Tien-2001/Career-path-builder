@@ -5,23 +5,75 @@ import {
     HomeOutlined,
     CaretRightOutlined
 } from '@ant-design/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getAllReview } from '../../ApiServices/CompareUserApi/getAllReview';
+import { getAllUser } from '../../ApiServices/CompareUserApi/getAllUser';
+import { getCompareUser } from '../../ApiServices/CompareUserApi/getCompareUser';
 
 function CompareUser() {
     const [form] = Form.useForm();
     const [selectedValues, setSelectedValues] = useState([]);
+    const [selectedValuesReview, setSelectedValuesReview] = useState(0);
 
     const handleSelect = (selectedOptions: any) => {
         form.setFieldsValue({
-            username_userid: form.getFieldValue('username_userid').slice(0, 2),     
+            username_userid: form.getFieldValue('username_userid').slice(0, 2),
         });
         if (selectedOptions.length > 2) {
             setSelectedValues(selectedOptions.slice(0, 2));
-          } else {
+        } else {
             setSelectedValues(selectedOptions);
-          }
+        }
     };
-        
+    const handleSelectReview = (selectecOption: any) => {
+        setSelectedValuesReview(selectecOption);
+    }
+
+    const [dataReview, setDataReview] = useState<any>([]);
+    const [dataUser, setDataUser] = useState<any>([]);
+    const [dataCompareUser, setCompareUser] = useState<any>([]);
+    const {
+        getAllReviewResponse,
+        // getAllIsLoading,
+        // getAllError,
+        // getAllRefetch,
+    } = getAllReview();
+    const {
+        getAllUserResponse,
+        // getAllIsLoading,
+        // getAllError,
+        // getAllRefetch,
+    } = getAllUser();
+    const {
+        getCompareUserResponse,
+        // getCompareUserIsLoading,
+        // getCompareUserError,
+        // getCompareUserRefetch,
+    } = getCompareUser(2, selectedValuesReview, selectedValues[0], selectedValues[1]);
+    useEffect(() => {
+        if (getAllReviewResponse) {
+            setDataReview(getAllReviewResponse);
+        }
+        if (getAllUserResponse) {
+            setDataUser(getAllUserResponse)
+        }
+        if (getCompareUserResponse) {
+            setCompareUser(getCompareUserResponse)
+        }
+    }, [getAllReviewResponse, getAllUserResponse, getCompareUserResponse])
+
+
+    const handleSubmit = () => {
+        console.log(dataCompareUser);
+    }
+
+    console.log(dataCompareUser?.data?.user1.dataReview?.map((value: any) => {
+        return (
+            value.point
+        )
+    }));
+
+
     return (
         <>
             <div className='review_header'>
@@ -39,20 +91,14 @@ function CompareUser() {
                                     <Row>
                                         <Typography.Title level={5} style={{ margin: 0 }}>Đợt đánh giá:</Typography.Title>
                                         <Form.Item name="evaluationsession" style={{ marginLeft: 15 }} >
-                                            <Select placeholder='Chọn đợt đánh giá' style={{ width: 200 }} options={[
-                                                {
-                                                    value: '1',
-                                                    label: 'Đợt 1',
-                                                },
-                                                {
-                                                    value: '2',
-                                                    label: 'Đợt 2',
-                                                },
-                                                {
-                                                    value: '3',
-                                                    label: 'Đợt 3',
-                                                },
-                                            ]} />
+                                            <Select placeholder='Chọn đợt đánh giá' style={{ width: 200 }} value={selectedValuesReview} options={
+                                                dataReview?.data?.map((v: any) => (
+                                                    {
+                                                        label: v.reviewname,
+                                                        value: v.reviewid
+                                                    }
+                                                ))
+                                            } onChange={handleSelectReview} />
                                         </Form.Item>
                                     </Row>
                                 </Col>
@@ -60,25 +106,16 @@ function CompareUser() {
                                     <Row>
                                         <Typography.Title level={5} style={{ margin: 0 }}>Nhân viên:</Typography.Title>
                                         <Form.Item name="username_userid" style={{ marginLeft: 15 }}>
-                                            <Select placeholder='Chọn nhân viên cần so sánh' onChange={handleSelect} value={selectedValues} style={{ width: 500 }} mode={'tags'} options={[
-                                                {
-                                                    value: '1',
-                                                    label: '222037-Nguyễn Chí Lợi',
-                                                },
-                                                {
-                                                    value: '2',
-                                                    label: '227358-Nguyễn Xuân Tiến',
-                                                },
-                                                {
-                                                    value: '3',
-                                                    label: '227431-Lê Phước Đạt',
-                                                },
-                                            ]} />
+                                            <Select placeholder='Chọn nhân viên cần so sánh' onChange={handleSelect} value={selectedValues} style={{ width: 500 }} mode={'tags'}
+                                                options={dataUser?.data?.map((v: any) => ({
+                                                    label: v.staffName,
+                                                    value: v.userId
+                                                }))} />
                                         </Form.Item>
                                     </Row>
                                 </Col>
                                 <Col xl={4} lg={6} md={8} sm={12} xs={24} style={{ bottom: 5 }}>
-                                    <ButtonBase className={'btn_detail'} label='So sánh' />
+                                    <ButtonBase className={'btn_detail'} label='So sánh' onClick={handleSubmit} />
                                 </Col>
                             </Row>
                         </Form>
@@ -122,43 +159,34 @@ function CompareUser() {
                         <Col xl={8} lg={8} md={8} sm={12} xs={24}>
                             <div className='information-frame'>
                                 <div className='userid-name'>
-                                    222037 - Nguyễn Chí Lợi
+                                    {dataCompareUser?.data?.user1?.staff?.userId} - {dataCompareUser?.data?.user1?.staff?.staffName}
                                 </div>
                                 <div className='userid-name'>
-                                    Front-End Level 1
+                                    {dataCompareUser?.data?.user1?.staff?.positionjob}
                                 </div>
                                 <div className='userid-name underlined'>
-                                    HRM - Báo cáo nội bộ
+                                    {dataCompareUser?.data?.user1?.staff?.department}
                                 </div>
-                                <div className='Criteria example-1'>
-                                    2
-                                </div>
-                                <div className='Criteria example-2'>
-                                    3
-                                </div>
-                                <div className='Criteria example-0'>
-                                    2
-                                </div>
-                                <div className='Criteria example-0'>
-                                    0
-                                </div>
-                                <div className='Criteria example-0'>
-                                    0
-                                </div>
-                                <div className='Criteria example-1'>
-                                    2
-                                </div>
+                                {dataCompareUser?.data?.user1.dataReview?.map((value: any) => {
+                                    return (
+                                        <div className='Criteria example-1'>
+                                            {value.point}
+                                        </div>
+                                    )
+
+                                })}
+
                             </div>
                         </Col>
                         <Col xl={8} lg={8} md={8} sm={12} xs={24}>
                             <div className='userid-name'>
-                                227358 - Nguyễn Xuân Tiến
+                                {dataCompareUser?.data?.user2?.staff?.userId} - {dataCompareUser?.data?.user2?.staff?.staffName}
                             </div>
                             <div className='userid-name'>
-                                Front-End Level 1
+                                {dataCompareUser?.data?.user2?.staff?.positionjob}
                             </div>
                             <div className='userid-name underlined'>
-                                HRM - Báo cáo nội bộ
+                                {dataCompareUser?.data?.user2?.staff?.department}
                             </div>
                             <div className='Criteria example-2'>
                                 3
