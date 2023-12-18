@@ -6,14 +6,16 @@ import ReactFlow, {
   useEdgesState,
   Position,
 } from "reactflow";
-import { Modal, Table } from "antd";
 
 import "reactflow/dist/style.css";
 import "./map.scss";
 import { initNodes, initEdges, Nodes, edges } from "./dataTest.tsx";
 import { useEffect, useMemo, useState } from "react";
-import ModalListTieuChi from "./Modal/ModalListTieuChi.tsx";
-import ModalKhaiBaoTieuChi from "./Modal/ModalKhaiBaoTieuChi.tsx";
+import ModalListCriteria from "./Modal/ModalListCriteria.tsx";
+import ModalCriteriaDeclaration from "./Modal/ModalCriteriaDeclaration.tsx";
+
+//API
+import { GetTree } from "../../ApiServices/MapApi/GetTree.tsx";
 
 export enum ConnectionLineType {
   Bezier = "default",
@@ -24,48 +26,94 @@ export enum ConnectionLineType {
 }
 
 function Map() {
-  const nodeData = Nodes.map((value: any, index: any) => {
-    return {
-      id: String(value.id),
-      data: { label: value.data.shortname, levelname: value.data.levelname },
-      position: value.position,
-      sourcePosition: Position.Right,
-      targetPosition: Position.Left,
-      draggable: false,
-      className:
-        value.levelclass <= 1
-          ? `node__level${value.levelclass}`
-          : `node__level node__level${value.levelclass}`,
-    };
-  });
+  const { getTreeResponse, getTreeIsLoading, getTreeError, getTreeRefetch } =
+    GetTree();
 
-  const edgeData = edges.map((value: any, index: any) => {
-    return {
-      id: String(index),
-      source: value.source,
-      target: value.target,
-      animated: true,
-      type: ConnectionLineType.Straight,
-    };
-  });
+  // const nodeData = Nodes.map((value: any, index: any) => {
+  //   return {
+  //     id: String(value.id),
+  //     data: { label: value.data.shortname, levelname: value.data.levelname },
+  //     position: value.position,
+  //     sourcePosition: Position.Right,
+  //     targetPosition: Position.Left,
+  //     draggable: false,
+  //     className:
+  //       value.levelclass <= 1
+  //         ? `node__level${value.levelclass}`
+  //         : `node__level node__level${value.levelclass}`,
+  //   };
+  // });
 
-  // caching lại values nodes khi cây dom thay đổi kh refresh key node
-  const initialNodes = useMemo(() => (nodeData ? nodeData : []), [nodeData]);
-  const initialEdges = useMemo(() => (edgeData ? edgeData : []), [edgeData]);
+  // const edgeData = edges.map((value: any, index: any) => {
+  //   return {
+  //     id: String(index),
+  //     source: value.source,
+  //     target: value.target,
+  //     animated: true,
+  //     type: ConnectionLineType.Straight,
+  //   };
+  // });
 
-  const [nodesData, setNodes, onNodesChange] = useNodesState(initialNodes);
+  // // caching lại values nodes khi cây dom thay đổi kh refresh key node
+  // const initialNodes = useMemo(() => (nodeData ? nodeData : []), [nodeData]);
+  // const initialEdges = useMemo(() => (edgeData ? edgeData : []), [edgeData]);
 
-  const [edgesData, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodesData, setNodes, onNodesChange] = useNodesState([]);
+  const [edgesData, setEdges, onEdgesChange] = useEdgesState([]);
 
-  const [tabNode, setTabNode] = useState<any>();
+  const [tabNode, setTabNode] = useState<any>(1);
 
   const [open, setOpen] = useState(false);
   const [openModalKhaibao, setOpenModalKhaibao] = useState(false);
 
   useEffect(() => {
-    setNodes(nodeData);
-    setEdges(edgeData);
-  }, []);
+    const handleRenderNode = async () => {
+      if (getTreeResponse) {
+        let dataFormat = getTreeResponse?.data?.nodes!.map(
+          (value: any, index: any) => {
+            return {
+              id: String(value.id),
+              data: {
+                label: value.data.shortname,
+                levelname: value.data.levelname,
+              },
+              position: value.position,
+              sourcePosition: Position.Right,
+              targetPosition: Position.Left,
+              draggable: false,
+              className:
+                value.levelclass <= 1
+                  ? `node__level${value.levelclass}`
+                  : `node__level node__level${value.levelclass}`,
+            };
+          }
+        );
+        await setNodes(dataFormat);
+      }
+    };
+
+    handleRenderNode();
+  }, [getTreeResponse]);
+
+  useEffect(() => {
+    const handleRenderEdge = async () => {
+      if (getTreeResponse) {
+        let dataFormat = getTreeResponse?.data?.edges!.map(
+          (value: any, index: any) => {
+            return {
+              id: String(index),
+              source: value.source,
+              target: value.target,
+              animated: true,
+              type: ConnectionLineType.Straight,
+            };
+          }
+        );
+        await setEdges(dataFormat);
+      }
+    };
+    handleRenderEdge();
+  }, [getTreeResponse]);
 
   const showModal = () => {
     setOpen(true);
@@ -81,14 +129,14 @@ function Map() {
 
   return (
     <>
-      <ModalListTieuChi
+      <ModalListCriteria
         setOpenModalKhaibao={setOpenModalKhaibao}
         openModalKhaibao={openModalKhaibao}
         setOpen={setOpen}
         open={open}
         tabNode={tabNode}
       />
-      <ModalKhaiBaoTieuChi
+      <ModalCriteriaDeclaration
         setOpen={setOpenModalKhaibao}
         open={openModalKhaibao}
         tabNode={tabNode}

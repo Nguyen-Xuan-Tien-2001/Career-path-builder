@@ -24,7 +24,7 @@ const columns = [
   },
 ];
 
-function ModalKhaiBaoTieuChi(param: any) {
+function ModalCriteriaDeclaration(param: any) {
   const tabNode = param.tabNode;
   const open = param.open;
   const setOpen = param.setOpen;
@@ -54,4 +54,4 @@ function ModalKhaiBaoTieuChi(param: any) {
   );
 }
 
-export default ModalKhaiBaoTieuChi;
+export default ModalCriteriaDeclaration;

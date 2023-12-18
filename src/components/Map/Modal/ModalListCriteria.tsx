@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Modal, Table } from "antd";
 
+import { GetCriteriaByLevelId } from "../../../ApiServices/MapApi/GetCriteriaByLevel";
+
 const columns = [
   {
     title: "STT",
@@ -24,10 +26,17 @@ const columns = [
   },
 ];
 
-function ModalListTieuChi(param: any) {
+function ModalListCriteria(param: any) {
   const tabNode = param.tabNode;
   const open = param.open;
   const setOpen = param.setOpen;
+
+  const {
+    getCriteriaByLevelResponse,
+    getCriteriaByLevelIsLoading,
+    getCriteriaByLevelError,
+    getCriteriaByLevelRefetch,
+  } = GetCriteriaByLevelId(tabNode.id);
 
   const handleOk = (e: React.MouseEvent<HTMLElement>) => {
     param.setOpenModalKhaibao(true);
@@ -48,10 +57,13 @@ function ModalListTieuChi(param: any) {
         keyboard={true}
         okText={"Khai báo bộ tiêu chí"}
       >
-        <Table columns={columns} />
+        <Table
+          columns={columns}
+          dataSource={getCriteriaByLevelResponse?.data}
+        />
       </Modal>
     </>
   );
 }
 
-export default ModalListTieuChi;
+export default ModalListCriteria;
