@@ -1,26 +1,21 @@
-// import useAxiosFunction from "../../hook/useAxiosFunction.tsx";
+import axios from "axios";
 
-// import httpClient from "./../../utils/axiosInstance";
+import { API_BASE_URL, headers } from "../../utils/config.ts";
 
-// export const GetAllCriterialByPath = (pathID) => {
-//     const API_URL = `/ReviewPeriod/getAllCriterialByPath?pathid=${pathID}`;
+const GetAllReview = (pathid: number) => {
+    const API_URL = "/CriteriaByCapacity/getAllCriterialByPath";
 
-//     const {
-//         response: getAllCriterialByPathResponse,
-//         isLoading: getAllCriterialByPathIsLoading,
-//         error: getAllCriterialByPathError,
-//         refetch: getAllCriterialByPathRefetch,
-//     } = useAxiosFunction({
-//         axiosInstance: httpClient,
-//         method: "GET",
-//         url: API_URL,
-//         requestConfig: {},
-//     });
+    const token = localStorage.getItem("token");
+    return axios.get(API_URL, {
+        baseURL: API_BASE_URL,
+        headers: {
+            ...headers,
+            Authorization: `Bearer ${token}`,
+        },
+        params: {
+            pathid: pathid,
+        },
+    });
+};
 
-//     return {
-//         getAllCriterialByPathResponse,
-//         getAllCriterialByPathIsLoading,
-//         getAllCriterialByPathError,
-//         getAllCriterialByPathRefetch,
-//     };
-// };
+export default GetAllReview;

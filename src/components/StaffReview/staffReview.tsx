@@ -15,6 +15,7 @@ import TableInfo from "./tableInfo";
 import {
     GetAllReview,
     GetAllUserByAssessoridReviewid,
+    GetAllCriterialByPath,
 } from "./../../ApiServices/StaffReviewApi";
 
 interface IReview {
@@ -25,13 +26,31 @@ interface IReview {
     timestart: string;
 }
 
+interface IUser {
+    assessorid: number;
+    userid: number;
+    staffname: string;
+    ratingcoefficient: number;
+    reviewid: number;
+}
+
+interface ICriteria {
+    criteriaid: number;
+    criterianame: string;
+    unit: string;
+    description: string;
+    capacityid: number;
+}
+
 const StaffReview: React.FC = () => {
     const [isShowForm, setIsShowForm] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [selectedUser, setSelectedUser] = useState<number>();
-    const [selectedReview, setSelectedReview] = useState<number>();
-    const [reviews, setReviews] = useState([]);
+    const [selectedUser, setSelectedUser] = useState<IUser>();
+    const [selectedReview, setSelectedReview] = useState<number>(0);
+    const [reviews, setReviews] = useState<Array<IReview>>();
     const [users, setUsers] = useState([]);
+    const [criterias, setCriterias] = useState([]);
+    const [selectedCriteria, setSelectedCriteria] = useState<ICriteria>();
 
     const { TextArea } = Input;
 
@@ -43,26 +62,18 @@ const StaffReview: React.FC = () => {
         setIsModalOpen(false);
     };
 
-    const onChange = (value: string) => {
+    const onChangeUser = (value: string) => {
         setIsShowForm(false);
-        setSelectedUser(parseInt(value));
+        setSelectedUser(
+            users?.find((item: IUser) => item.userid === parseInt(value))
+        );
     };
 
     const onChangeReview = (value: string) => {
         setIsShowForm(false);
         setSelectedReview(parseInt(value));
-        console.log("value", value);
-        async function fetchData() {
-            if (parseInt(value)) {
-                const res = await GetAllUserByAssessoridReviewid(
-                    1,
-                    parseInt(value)
-                );
-                setUsers(res?.data);
-            }
-        }
-        fetchData();
-        console.log("users", users);
+        setUsers([]);
+        setSelectedUser(undefined);
     };
 
     const filterOption = (
@@ -91,14 +102,34 @@ const StaffReview: React.FC = () => {
         fetchData();
     }, []);
 
-    // useEffect(() => {
-    //     // const path = reviews?.find((item) => item.reviewid === selectedReview);
-    //     // if (path) {
-    //     //     const criterials = GetAllCriterialByPath(path.pathid);
-    //     //     console.log("criterials", criterials);
-    //     // }
+    useEffect(() => {
+        async function fetchDataUser() {
+            if (selectedReview) {
+                const res = await GetAllUserByAssessoridReviewid(
+                    1,
+                    selectedReview
+                );
+                setUsers(res?.data?.data);
+            }
+        }
+        async function fetchDataReview() {
+            const path: IReview | undefined = reviews?.find(
+                (item: IReview) => item?.reviewid === selectedReview
+            );
+            if (path) {
+                const res = await GetAllCriterialByPath(path.pathid);
+                setCriterias(res?.data?.data);
+            }
+        }
+        fetchDataUser();
+        fetchDataReview();
+    }, [selectedReview, reviews]);
 
-    // }, [selectedReview]);
+    useEffect(() => {
+        if (users?.length < 0) {
+            setSelectedUser(undefined);
+        }
+    }, [users]);
 
     return (
         <>
@@ -140,22 +171,16 @@ const StaffReview: React.FC = () => {
                                     showSearch
                                     placeholder="--Chọn nhân viên--"
                                     optionFilterProp="children"
-                                    onChange={onChange}
+                                    onChange={onChangeUser}
                                     filterOption={filterOption}
-                                    options={[
-                                        {
-                                            value: "222037",
-                                            label: "222037 - Nguyễn Chí Lợi",
-                                        },
-                                        {
-                                            value: "227358",
-                                            label: "227358 - Nguyễn Xuân Tiến",
-                                        },
-                                        {
-                                            value: "227451",
-                                            label: "227451 - Đạt Villa",
-                                        },
-                                    ]}
+                                    disabled={!users?.length}
+                                    value={selectedUser?.staffname}
+                                    options={users?.map((item: IUser) => {
+                                        return {
+                                            value: item.userid.toString(),
+                                            label: item.staffname,
+                                        };
+                                    })}
                                 />
                             </div>
                         </div>
@@ -177,96 +202,85 @@ const StaffReview: React.FC = () => {
                             Chi tiết bài đánh giá
                         </div>
                         <div className="staff-review_form">
-                            <div className="staff-review_form-item">
-                                <div className="staff-review_form-item-title">
-                                    <span>Tiêu chí:</span>
-                                    <span className="staff-review_form-item-title-name">
-                                        Tên tiêu chí
-                                    </span>
-                                    <Tooltip
-                                        placement="top"
-                                        title={"Xem mô tả tiêu chí"}
-                                        color="blue"
+                            <Modal
+                                open={isModalOpen}
+                                width={1500}
+                                style={{ padding: 50 }}
+                                onCancel={handleCancel}
+                                footer={
+                                    <Button
+                                        key="close"
+                                        type="primary"
+                                        danger
+                                        icon={<CloseOutlined />}
+                                        onClick={handleCancel}
                                     >
-                                        <InfoCircleFilled
-                                            className="staff-review_form-item-title-info"
-                                            onClick={showModal}
-                                        />
-                                    </Tooltip>
-                                </div>
-                                <Modal
-                                    open={isModalOpen}
-                                    width={1500}
-                                    style={{ padding: 50 }}
-                                    onCancel={handleCancel}
-                                    footer={
-                                        <Button
-                                            key="close"
-                                            type="primary"
-                                            danger
-                                            icon={<CloseOutlined />}
-                                            onClick={handleCancel}
-                                        >
-                                            Đóng
-                                        </Button>
-                                    }
-                                >
-                                    <div>
-                                        <div className="staff-review_form-item-modal-title">
-                                            Mô tả
-                                        </div>
-                                        <div className="staff-review_form-item-modal-subtitle">
-                                            <span>Tiêu chí:</span>
-                                            <span className="staff-review_form-item-modal-name">
-                                                Tên tiêu chí
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <div className="staff-review_form-item-modal-note">
-                                                *Bảng mô tả tiêu chí
-                                            </div>
-                                            <TableInfo />
-                                        </div>
+                                        Đóng
+                                    </Button>
+                                }
+                            >
+                                <div>
+                                    <div className="staff-review_form-item-modal-title">
+                                        Mô tả
                                     </div>
-                                </Modal>
-                                <div className="staff-review_form-item-input">
-                                    <span>Điểm đánh giá:</span>
-                                    <Input placeholder="Nhập điểm đánh giá" />
+                                    <div className="staff-review_form-item-modal-subtitle">
+                                        <span>Tiêu chí:</span>
+                                        <span className="staff-review_form-item-modal-name">
+                                            {selectedCriteria?.criterianame}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <div className="staff-review_form-item-modal-note">
+                                            *Bảng mô tả tiêu chí
+                                        </div>
+                                        <TableInfo
+                                            criteria={selectedCriteria}
+                                        />
+                                    </div>
                                 </div>
-                                <div className="staff-review_form-item-input">
-                                    <span>Nhận xét:</span>
-                                    <TextArea
-                                        rows={5}
-                                        placeholder="Nhập nhận xét"
-                                    />
-                                </div>
-                            </div>
-                            <div className="staff-review_form-item">
-                                <div className="staff-review_form-item-title">
-                                    <span>Tiêu chí:</span>
-                                    <span className="staff-review_form-item-title-name">
-                                        Tên tiêu chí
-                                    </span>
-                                    <Tooltip
-                                        placement="top"
-                                        title={"Xem mô tả tiêu chí"}
-                                        color="blue"
-                                    >
-                                        <InfoCircleFilled className="staff-review_form-item-title-info" />
-                                    </Tooltip>{" "}
-                                </div>
-                                <div className="staff-review_form-item-input">
-                                    <span>Điểm đánh giá:</span>
-                                    <Input placeholder="Nhập điểm đánh giá" />
-                                </div>
-                                <div className="staff-review_form-item-input">
-                                    <span>Nhận xét:</span>
-                                    <TextArea
-                                        rows={5}
-                                        placeholder="Nhập nhận xét"
-                                    />
-                                </div>
-                            </div>
+                            </Modal>
+                            {criterias &&
+                                criterias?.map((item: ICriteria) => {
+                                    return (
+                                        <div
+                                            key={item?.criteriaid}
+                                            className="staff-review_form-item"
+                                        >
+                                            <div className="staff-review_form-item-title">
+                                                <span>Tiêu chí:</span>
+                                                <span className="staff-review_form-item-title-name">
+                                                    {item.criterianame}
+                                                </span>
+                                                <Tooltip
+                                                    placement="top"
+                                                    title={"Xem mô tả tiêu chí"}
+                                                    color="blue"
+                                                >
+                                                    <InfoCircleFilled
+                                                        className="staff-review_form-item-title-info"
+                                                        onClick={() => {
+                                                            setSelectedCriteria(
+                                                                item
+                                                            );
+                                                            showModal();
+                                                        }}
+                                                    />
+                                                </Tooltip>
+                                            </div>
+                                            <div className="staff-review_form-item-input">
+                                                <span>Điểm đánh giá:</span>
+                                                <Input placeholder="Nhập điểm đánh giá" />
+                                            </div>
+                                            <div className="staff-review_form-item-input">
+                                                <span>Nhận xét:</span>
+                                                <TextArea
+                                                    rows={5}
+                                                    placeholder="Nhập nhận xét"
+                                                />
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                         </div>
                         <div className="staff-review_btn">
                             <Button
