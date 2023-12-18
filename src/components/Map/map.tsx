@@ -10,7 +10,7 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import "./map.scss";
 import { initNodes, initEdges, Nodes, edges } from "./dataTest.tsx";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import ModalListCriteria from "./Modal/ModalListCriteria.tsx";
 import ModalCriteriaDeclaration from "./Modal/ModalCriteriaDeclaration.tsx";
 
@@ -61,7 +61,7 @@ function Map() {
   const [nodesData, setNodes, onNodesChange] = useNodesState([]);
   const [edgesData, setEdges, onEdgesChange] = useEdgesState([]);
 
-  const [tabNode, setTabNode] = useState<any>(1);
+  const [tabNode, setTabNode] = useState(0);
 
   const [open, setOpen] = useState(false);
   const [openModalKhaibao, setOpenModalKhaibao] = useState(false);
@@ -80,6 +80,7 @@ function Map() {
               position: value.position,
               sourcePosition: Position.Right,
               targetPosition: Position.Left,
+              indelible: false,
               draggable: false,
               className:
                 value.levelclass <= 1
