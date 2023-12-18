@@ -11,8 +11,8 @@ import "reactflow/dist/style.css";
 import "./map.scss";
 import { initNodes, initEdges, Nodes, edges } from "./dataTest.tsx";
 import { useEffect, useMemo, useState } from "react";
-import ModalListTieuChi from "./Modal/ModalListTieuChi.tsx";
-import ModalKhaiBaoTieuChi from "./Modal/ModalKhaiBaoTieuChi.tsx";
+import ModalListCriteria from "./Modal/ModalListCriteria.tsx";
+import ModalCriteriaDeclaration from "./Modal/ModalCriteriaDeclaration.tsx";
 
 //API
 import { GetTree } from "../../ApiServices/MapApi/GetTree.tsx";
@@ -61,7 +61,7 @@ function Map() {
   const [nodesData, setNodes, onNodesChange] = useNodesState([]);
   const [edgesData, setEdges, onEdgesChange] = useEdgesState([]);
 
-  const [tabNode, setTabNode] = useState<any>();
+  const [tabNode, setTabNode] = useState<any>(1);
 
   const [open, setOpen] = useState(false);
   const [openModalKhaibao, setOpenModalKhaibao] = useState(false);
@@ -129,14 +129,14 @@ function Map() {
 
   return (
     <>
-      <ModalListTieuChi
+      <ModalListCriteria
         setOpenModalKhaibao={setOpenModalKhaibao}
         openModalKhaibao={openModalKhaibao}
         setOpen={setOpen}
         open={open}
         tabNode={tabNode}
       />
-      <ModalKhaiBaoTieuChi
+      <ModalCriteriaDeclaration
         setOpen={setOpenModalKhaibao}
         open={openModalKhaibao}
         tabNode={tabNode}

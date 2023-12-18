@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 
 interface IResponse {
-  data: object;
+  data: any[];
   status: string;
   messsage: string;
   errorcode: number;

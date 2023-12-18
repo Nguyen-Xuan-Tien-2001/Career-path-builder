@@ -2,6 +2,13 @@ import useAxios from "../../hook/useAxios.tsx";
 
 import httpClient from "../../utils/axiosInstance";
 
+interface dataRespone {
+  response: object;
+  isLoading: boolean;
+  error: object;
+  refetch: () => object;
+}
+
 export const GetCriteriaByLevelId = (levelId: any) => {
   const getCriteriaByLevelUrl = `/Criteria_Levels/GetCriteriaByLevelId?levelId=${levelId}`;
 
