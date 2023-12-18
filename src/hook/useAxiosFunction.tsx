@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
-
+interface IResponse {
+  data: object;
+  status: string;
+  messsage: string;
+  errorcode: number;
+}
 const useAxiosFunction = () => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);

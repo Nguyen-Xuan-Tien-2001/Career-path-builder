@@ -1,10 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
 
+interface IResponse {
+  data: object;
+  status: string;
+  messsage: string;
+  errorcode: number;
+}
+
 //Hook này dùng cho method Gọi tự động
-const useAxios = (configObj) => {
+const useAxios = (configObj: any) => {
   const { axiosInstance, method, url, requestConfig = {} } = configObj;
 
-  const [response, setResponse] = useState(null);
+  const [response, setResponse] = useState<IResponse>();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [reload, setReload] = useState(0);
@@ -16,7 +23,7 @@ const useAxios = (configObj) => {
 
   useEffect(() => {
     const controller = new AbortController(); //dùng đến khi cần dừng 1 request
-    const token = localStorage.getItem("token");    
+    const token = localStorage.getItem("token");
     //const token = 'abcxyz';
     const fetchData = async () => {
       try {
@@ -28,13 +35,13 @@ const useAxios = (configObj) => {
           signal: controller.signal,
           headers: {
             //authorization: token ? `${token}` : "",
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
         setResponse(res.data);
         setError(null);
-      } catch (err) {
+      } catch (err: any) {
         setError(err.response);
       } finally {
         setIsLoading(false);
