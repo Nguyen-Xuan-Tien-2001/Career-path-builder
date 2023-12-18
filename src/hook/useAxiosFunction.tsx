@@ -1,9 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
-
+interface IResponse {
+  data: object;
+  status: string;
+  messsage: string;
+  errorcode: number;
+}
 const useAxiosFunction = () => {
-  const [response, setResponse] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState<IResponse[]>([]);
+  const [error, setError] = useState<number>();
+  const [loading, setLoading] = useState<boolean>(false);
   const [controller, setController] = useState<any>();
 
   const axiosFetch = useCallback(async (configObj: any) => {
@@ -26,7 +31,7 @@ const useAxiosFunction = () => {
         },
       });
       setResponse(res.data);
-      setError(null);
+      setError(0);
     } catch (err: any) {
       setError(err.response);
     } finally {

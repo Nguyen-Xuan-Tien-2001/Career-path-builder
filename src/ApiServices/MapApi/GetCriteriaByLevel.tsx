@@ -2,25 +2,32 @@ import useAxios from "../../hook/useAxios.tsx";
 
 import httpClient from "../../utils/axiosInstance";
 
-export const GetAllCV = () => {
-  const getAllCVUrl = "/CV/getall";
+interface dataRespone {
+  response: object;
+  isLoading: boolean;
+  error: object;
+  refetch: () => object;
+}
+
+export const GetCriteriaByLevelId = (levelId: any) => {
+  const getCriteriaByLevelUrl = `/Criteria_Levels/GetCriteriaByLevelId?levelId=${levelId}`;
 
   const {
-    response: getAllCVResponse,
-    isLoading: getAllCVIsLoading,
-    error: getAllCVError,
-    refetch: getAllCVRefetch,
+    response: getCriteriaByLevelResponse,
+    isLoading: getCriteriaByLevelIsLoading,
+    error: getCriteriaByLevelError,
+    refetch: getCriteriaByLevelRefetch,
   } = useAxios({
     axiosInstance: httpClient,
     method: "GET",
-    url: getAllCVUrl,
+    url: getCriteriaByLevelUrl,
     requestConfig: {},
   });
 
   return {
-    getAllCVResponse,
-    getAllCVIsLoading,
-    getAllCVError,
-    getAllCVRefetch,
+    getCriteriaByLevelResponse,
+    getCriteriaByLevelIsLoading,
+    getCriteriaByLevelError,
+    getCriteriaByLevelRefetch,
   };
 };
