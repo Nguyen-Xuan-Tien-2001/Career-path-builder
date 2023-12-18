@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Table } from "antd";
 
 import { GetCriteriaByLevelId } from "../../../ApiServices/MapApi/GetCriteriaByLevel";
@@ -6,8 +6,11 @@ import { GetCriteriaByLevelId } from "../../../ApiServices/MapApi/GetCriteriaByL
 const columns = [
   {
     title: "STT",
-    dataIndex: "name",
-    key: "name",
+    key: "id",
+    render: (id: any, record: any, index: any) => {
+      ++index;
+      return index;
+    },
   },
   {
     title: "Têt tiêu chí",
@@ -27,37 +30,37 @@ const columns = [
 ];
 
 function ModalListCriteria(param: any) {
-  const tabNode = param.tabNode;
-  const open = param.open;
-  const setOpen = param.setOpen;
-
   const {
     getCriteriaByLevelResponse,
     getCriteriaByLevelIsLoading,
     getCriteriaByLevelError,
     getCriteriaByLevelRefetch,
-  } = GetCriteriaByLevelId(tabNode.id);
+  } = GetCriteriaByLevelId(param.tabNode.id);
 
   const handleOk = (e: React.MouseEvent<HTMLElement>) => {
     param.setOpenModalKhaibao(true);
-    setOpen(false);
+    param.setOpen(false);
   };
 
   const handleClickKhaiBao = (e: React.MouseEvent<HTMLElement>) => {
-    setOpen(false);
+    param.setOpen(false);
   };
 
   return (
     <>
       <Modal
-        title={`Danh sách tiêu chí của ${tabNode?.data?.levelname}`}
-        open={open}
+        title={`Danh sách tiêu chí của ${param.tabNode?.data?.levelname}`}
+        open={param.open}
         onOk={handleOk}
         onCancel={handleClickKhaiBao}
         keyboard={true}
         okText={"Khai báo bộ tiêu chí"}
+        okButtonProps={{
+          disabled: getCriteriaByLevelResponse?.data.length != 0,
+        }}
       >
         <Table
+          pagination={false}
           columns={columns}
           dataSource={getCriteriaByLevelResponse?.data}
         />
