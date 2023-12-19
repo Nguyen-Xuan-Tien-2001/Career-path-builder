@@ -89,13 +89,13 @@ function CompareUser() {
 
 
     const handleSubmit = () => {
-        if (selectedValuesReview !== 0 && selectedValues.length >= 2){
+        if (selectedValuesReview !== 0 && selectedValues.length >= 2) {
             callgetCompareUserRefetch(2, selectedValuesReview, selectedValues[0], selectedValues[1]);
             success();
         }
         else
             error();
-        
+
     }
 
     ChartJS.register(
@@ -249,30 +249,28 @@ function CompareUser() {
                                         <div className='userid-name underlined'>
                                             {dataCompareUser?.data?.user1?.staff?.department}
                                         </div>
-                                        {dataCompareUser?.data?.user1.dataReview.length === 0 ?
+                                        {dataCompareUser?.data?.user1?.dataReview.length === 0 ?
                                             <div className='Criteria'>
                                                 Chưa có điểm ở kì đánh giá!
                                             </div>
-                                            :dataCompareUser?.data?.user2.dataReview.length === 0 ?
-                                            dataCompareUser?.data?.user1.dataReview?.map((value: any) => {
-                                                return (
-                                                    <>
+                                            : dataCompareUser?.data?.user2?.dataReview.length === 0 ?
+                                                dataCompareUser?.data?.user1?.dataReview?.map((value: any) => {
+                                                    return (
+
                                                         <div className='Criteria example-2'>
                                                             {value.point}
                                                         </div>
-                                                    </>
-                                                )
-                                            })
-                                            : 
-                                            dataCompareUser?.data?.user1.dataReview?.map((value: any) => {
-                                                return (
-                                                    <>
-                                                        <div className='Criteria example-0'>
+
+                                                    )
+                                                })
+                                                :
+                                                dataCompareUser?.data?.user1?.dataReview?.map((value: any, index: number) => {
+                                                    return (
+                                                        <div className={value.point > dataCompareUser?.data?.user2?.dataReview[index].point ? 'Criteria example-2' : (value.point < dataCompareUser?.data?.user2?.dataReview[index].point ? 'Criteria example-1' : 'Criteria example-0')} >
                                                             {value.point}
                                                         </div>
-                                                    </>
-                                                )
-                                            })}
+                                                    )
+                                                })}
 
                                     </div>
                                 </Col>
@@ -286,30 +284,32 @@ function CompareUser() {
                                     <div className='userid-name underlined'>
                                         {dataCompareUser?.data?.user2?.staff?.department}
                                     </div>
-                                    {dataCompareUser?.data?.user2.dataReview.length === 0 ?
+                                    {dataCompareUser?.data?.user2?.dataReview.length === 0 ?
                                         <div className='Criteria'>
                                             Chưa có điểm ở kì đánh giá!
                                         </div>
-                                        :dataCompareUser?.data?.user1.dataReview.length === 0 ?
-                                        dataCompareUser?.data?.user2.dataReview?.map((value: any) => {
-                                            return (
-                                                <>
-                                                    <div className='Criteria example-2'>
-                                                        {value.point}
-                                                    </div>
-                                                </>
-                                            )
-                                        })
-                                        : 
-                                        dataCompareUser?.data?.user2.dataReview?.map((value: any) => {
-                                            return (
-                                                <>
-                                                    <div className='Criteria example-0'>
-                                                        {value.point}
-                                                    </div>  
-                                                </>
-                                            )
-                                        })}
+                                        : dataCompareUser?.data?.user1?.dataReview.length === 0 ?
+                                            dataCompareUser?.data?.user2?.dataReview?.map((value: any) => {
+                                                return (
+                                                    <>
+                                                        <div className='Criteria example-2'>
+                                                            {value.point}
+                                                        </div>
+                                                    </>
+                                                )
+                                            })
+                                            :
+                                            dataCompareUser?.data?.user2?.dataReview?.map((value: any, index: number) => {
+                                                return (
+                                                    <>
+
+                                                        <div className={value.point > dataCompareUser?.data?.user1?.dataReview[index].point ? 'Criteria example-2' : (value.point < dataCompareUser?.data?.user1?.dataReview[index].point ? 'Criteria example-1' : 'Criteria example-0')} >
+                                                            {value.point}
+                                                        </div>
+
+                                                    </>
+                                                )
+                                            })}
                                 </Col>
                             </Row> :
                             <Line options={options} data={data} style={{ margin: "0 15%" }} />
