@@ -1,27 +1,28 @@
-import useAxios from "../../hook/useAxios.tsx";
 import httpClient from "../../utils/axiosInstance.tsx";
+import useAxiosFunction from "../../hook/useAxiosFunction";
 
-export const getCompareUser = (pathId: any,
-  reviewId: any,
-  userId1: any,
-  userId2: any,) => {
-  const getCompareUser = `/AllReviewResultUser/getUserCompare?pathId=${pathId}&&reviewId=${reviewId}&&userId1=${userId1}&&userId2=${userId2}`;
+export const getCompareUser = () => {
   const {
     response: getCompareUserResponse,
-    isLoading: getCompareUserIsLoading,
     error: getCompareUserError,
-    refetch: getCompareUserRefetch,
-  } = useAxios({
-    axiosInstance: httpClient,
-    method: "GET",
-    url: getCompareUser,
-    requestConfig: {},
-  });
+    loading: getCompareUserIsLoading,
+    axiosFetch: getCompareUserRefetch,
+  } = useAxiosFunction();
+
+  const callgetCompareUserRefetch = (pathId:any,reviewId:any,userid1:any,userid2:any) => {
+    const getCompareUser = `/AllReviewResultUser/getUserCompare?pathid=${pathId}&reviewid=${reviewId}&userid1=${userid1}&userid2=${userid2}`;
+    getCompareUserRefetch({
+      axiosInstance: httpClient,
+      method: "GET",
+      url: getCompareUser,
+      requestConfig: { },
+    });
+  };
 
   return {
     getCompareUserResponse,
     getCompareUserIsLoading,
     getCompareUserError,
-    getCompareUserRefetch,
+    callgetCompareUserRefetch,
   };
 };
