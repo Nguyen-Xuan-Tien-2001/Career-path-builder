@@ -99,7 +99,7 @@ function CompareUser() {
   const handleSubmit = () => {
     if (selectedValuesReview !== 0 && selectedValues.length >= 2) {
       callgetCompareUserRefetch(
-        1,
+        2,
         selectedValuesReview,
         selectedValues[0],
         selectedValues[1]
@@ -276,7 +276,7 @@ function CompareUser() {
                 <Col xl={8} lg={8} md={8} sm={12} xs={24}>
                   <div className="information-frame">
                     <div className="userid-name">
-                      {dataCompareUser?.data?.user1?.staff?.userId} -
+                      {dataCompareUser?.data?.user1?.staff?.userId} -{" "}
                       {dataCompareUser?.data?.user1?.staff?.staffName}
                     </div>
                     <div className="userid-name">
@@ -285,13 +285,12 @@ function CompareUser() {
                     <div className="userid-name underlined">
                       {dataCompareUser?.data?.user1?.staff?.department}
                     </div>
-                    {dataCompareUser?.data?.user1?.dataReview.length === 0 ? (
+                    {dataCompareUser?.data?.user1.dataReview.length === 0 ? (
                       <div className="Criteria">
                         Chưa có điểm ở kì đánh giá!
                       </div>
-                    ) : dataCompareUser?.data?.user2?.dataReview.length ===
-                      0 ? (
-                      dataCompareUser?.data?.user1?.dataReview?.map(
+                    ) : dataCompareUser?.data?.user2.dataReview.length === 0 ? (
+                      dataCompareUser?.data?.user1.dataReview?.map(
                         (value: any) => {
                           return (
                             <>
@@ -303,7 +302,7 @@ function CompareUser() {
                         }
                       )
                     ) : (
-                      dataCompareUser?.data?.user1?.dataReview?.map(
+                      dataCompareUser?.data?.user1.dataReview?.map(
                         (value: any) => {
                           return (
                             <>
@@ -319,7 +318,7 @@ function CompareUser() {
                 </Col>
                 <Col xl={8} lg={8} md={8} sm={12} xs={24}>
                   <div className="userid-name">
-                    {dataCompareUser?.data?.user2?.staff?.userId} -
+                    {dataCompareUser?.data?.user2?.staff?.userId} -{" "}
                     {dataCompareUser?.data?.user2?.staff?.staffName}
                   </div>
                   <div className="userid-name">
@@ -328,10 +327,10 @@ function CompareUser() {
                   <div className="userid-name underlined">
                     {dataCompareUser?.data?.user2?.staff?.department}
                   </div>
-                  {dataCompareUser?.data?.user2?.dataReview.length === 0 ? (
+                  {dataCompareUser?.data?.user2.dataReview.length === 0 ? (
                     <div className="Criteria">Chưa có điểm ở kì đánh giá!</div>
-                  ) : dataCompareUser?.data?.user1?.dataReview.length === 0 ? (
-                    dataCompareUser?.data?.user2?.dataReview?.map(
+                  ) : dataCompareUser?.data?.user1.dataReview.length === 0 ? (
+                    dataCompareUser?.data?.user2.dataReview?.map(
                       (value: any) => {
                         return (
                           <>
@@ -343,7 +342,7 @@ function CompareUser() {
                       }
                     )
                   ) : (
-                    dataCompareUser?.data?.user2?.dataReview?.map(
+                    dataCompareUser?.data?.user2.dataReview?.map(
                       (value: any) => {
                         return (
                           <>

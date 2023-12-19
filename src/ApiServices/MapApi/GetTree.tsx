@@ -3,7 +3,7 @@ import useAxios from "../../hook/useAxios.tsx";
 import httpClient from "../../utils/axiosInstance.tsx";
 
 export const GetTree = () => {
-  const getTreeUrl = `/Level/getTreeLevel?pathid=1`;
+  const getTreeUrl = `/Level/getTreeLevel?pathid=2`;
 
   const {
     response: getTreeResponse,
