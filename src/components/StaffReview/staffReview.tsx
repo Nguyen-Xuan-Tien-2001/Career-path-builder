@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Select, Input, Tooltip, Modal } from "antd";
+import { Button, Select, Input, Tooltip, Modal, Form, Space } from "antd";
 import {
     FormOutlined,
     InfoCircleFilled,
@@ -16,6 +16,7 @@ import {
     GetAllReview,
     GetAllUserByAssessoridReviewid,
     GetAllCriterialByPath,
+    GetAllResultReviewByAssessoridReviewid,
 } from "./../../ApiServices/StaffReviewApi";
 
 interface IReview {
@@ -42,6 +43,17 @@ interface ICriteria {
     capacityid: number;
 }
 
+interface IResult {
+    assessmenttime: string;
+    assessorid: number;
+    criteriaid: number;
+    note: string;
+    point: number;
+    reviewid: number;
+    reviewresultid: number;
+    userid: number;
+}
+
 const StaffReview: React.FC = () => {
     const [isShowForm, setIsShowForm] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -51,6 +63,7 @@ const StaffReview: React.FC = () => {
     const [users, setUsers] = useState([]);
     const [criterias, setCriterias] = useState([]);
     const [selectedCriteria, setSelectedCriteria] = useState<ICriteria>();
+    const [result, setResult] = useState<Array<IResult>>();
 
     const { TextArea } = Input;
 
@@ -83,9 +96,57 @@ const StaffReview: React.FC = () => {
 
     const handleShowForm = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
+        async function fetchDataResultReview() {
+            if (selectedReview) {
+                const res = await GetAllResultReviewByAssessoridReviewid(
+                    1, //current user id
+                    selectedReview
+                );
+                const data = res?.data?.data;
+                const resUser = data?.find(
+                    (item: IResult) => item.userid === selectedUser?.userid
+                );
+                setResult(resUser?.reviewResults);
+            }
+        }
         if (selectedUser) {
+            fetchDataResultReview();
             setIsShowForm(true);
         }
+    };
+
+    const onFinish = (values: object) => {
+        const reviewResult = {
+            assessmenttime: new Date().toISOString().slice(0, 19) + "Z",
+            reviewid: selectedReview,
+            userid: selectedUser?.userid,
+        };
+
+        const detail = [];
+
+        const keys = Object.keys(values);
+        const vals: string[] = Object.values(values);
+        for (let i = 0; i < keys.length; i += 2) {
+            if (keys[i].includes("point")) {
+                const id = parseInt(keys[i].split("point")[0]);
+                const temp = {
+                    criteriaid: id,
+                    point: parseFloat(vals[i]),
+                    note: vals[i + 1],
+                    accessorid: 1, //current user id
+                    reviewresultid: selectedReview,
+                };
+                detail.push(temp);
+            }
+        }
+
+        //add  review result
+        console.log("review result", reviewResult);
+        console.log("detail", detail);
+    };
+
+    const onFinishFailed = (errorInfo: object) => {
+        console.log("Failed:", errorInfo);
     };
 
     useEffect(() => {
@@ -106,7 +167,7 @@ const StaffReview: React.FC = () => {
         async function fetchDataUser() {
             if (selectedReview) {
                 const res = await GetAllUserByAssessoridReviewid(
-                    1,
+                    1, //current user id
                     selectedReview
                 );
                 setUsers(res?.data?.data);
@@ -174,7 +235,11 @@ const StaffReview: React.FC = () => {
                                     onChange={onChangeUser}
                                     filterOption={filterOption}
                                     disabled={!users?.length}
-                                    value={selectedUser?.staffname}
+                                    value={
+                                        selectedUser
+                                            ? `${selectedUser?.userid} - ${selectedUser?.staffname}`
+                                            : undefined
+                                    }
                                     options={users?.map((item: IUser) => {
                                         return {
                                             value: item.userid.toString(),
@@ -239,64 +304,149 @@ const StaffReview: React.FC = () => {
                                     </div>
                                 </div>
                             </Modal>
-                            {criterias &&
-                                criterias?.map((item: ICriteria) => {
-                                    return (
-                                        <div
-                                            key={item?.criteriaid}
-                                            className="staff-review_form-item"
-                                        >
-                                            <div className="staff-review_form-item-title">
-                                                <span>Tiêu chí:</span>
-                                                <span className="staff-review_form-item-title-name">
-                                                    {item.criterianame}
-                                                </span>
-                                                <Tooltip
-                                                    placement="top"
-                                                    title={"Xem mô tả tiêu chí"}
-                                                    color="blue"
+                            <Form
+                                name="staff-review_form"
+                                layout="horizontal"
+                                style={{ maxWidth: 1200 }}
+                                onFinish={onFinish}
+                                onFinishFailed={onFinishFailed}
+                            >
+                                {criterias &&
+                                    criterias?.map((item: ICriteria) => {
+                                        return (
+                                            <Form.Item key={item?.criteriaid}>
+                                                <div
+                                                    key={item?.criteriaid}
+                                                    className="staff-review_form-item"
                                                 >
-                                                    <InfoCircleFilled
-                                                        className="staff-review_form-item-title-info"
-                                                        onClick={() => {
-                                                            setSelectedCriteria(
-                                                                item
-                                                            );
-                                                            showModal();
-                                                        }}
-                                                    />
-                                                </Tooltip>
-                                            </div>
-                                            <div className="staff-review_form-item-input">
-                                                <span>Điểm đánh giá:</span>
-                                                <Input placeholder="Nhập điểm đánh giá" />
-                                            </div>
-                                            <div className="staff-review_form-item-input">
-                                                <span>Nhận xét:</span>
-                                                <TextArea
-                                                    rows={5}
-                                                    placeholder="Nhập nhận xét"
-                                                />
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                        </div>
-                        <div className="staff-review_btn">
-                            <Button
-                                type="primary"
-                                danger
-                                icon={<CloseOutlined />}
-                            >
-                                Huỷ
-                            </Button>
-                            <Button
-                                type="primary"
-                                icon={<CheckOutlined />}
-                                style={{ marginLeft: 30 }}
-                            >
-                                Đánh giá
-                            </Button>
+                                                    <div className="staff-review_form-item-title">
+                                                        <span>Tiêu chí:</span>
+                                                        <span className="staff-review_form-item-title-name">
+                                                            {item.criterianame}
+                                                        </span>
+                                                        <Tooltip
+                                                            placement="top"
+                                                            title={
+                                                                "Xem mô tả tiêu chí"
+                                                            }
+                                                            color="blue"
+                                                        >
+                                                            <InfoCircleFilled
+                                                                className="staff-review_form-item-title-info"
+                                                                onClick={() => {
+                                                                    setSelectedCriteria(
+                                                                        item
+                                                                    );
+                                                                    showModal();
+                                                                }}
+                                                            />
+                                                        </Tooltip>
+                                                    </div>
+                                                    <Form.Item
+                                                        name={`${item?.criteriaid}point`}
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message:
+                                                                    "Vui lòng nhập điểm đánh giá!",
+                                                            },
+                                                            () => ({
+                                                                validator(
+                                                                    _,
+                                                                    value
+                                                                ) {
+                                                                    if (
+                                                                        parseFloat(
+                                                                            value
+                                                                        ) <=
+                                                                            10 &&
+                                                                        parseFloat(
+                                                                            value
+                                                                        ) >= 0
+                                                                    ) {
+                                                                        return Promise.resolve();
+                                                                    }
+                                                                    return Promise.reject(
+                                                                        "Vui lòng nhập điểm đánh giá từ 0 đến 10!"
+                                                                    );
+                                                                },
+                                                            }),
+                                                        ]}
+                                                    >
+                                                        <div className="staff-review_form-item-input">
+                                                            <span>
+                                                                Điểm đánh giá:
+                                                            </span>
+                                                            <Input
+                                                                placeholder="Nhập điểm đánh giá"
+                                                                value={
+                                                                    result
+                                                                        ? result.find(
+                                                                              (
+                                                                                  ires: IResult
+                                                                              ) =>
+                                                                                  ires.criteriaid ===
+                                                                                  item.criteriaid
+                                                                          )
+                                                                              ?.point
+                                                                        : undefined
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        name={`${item?.criteriaid}note`}
+                                                    >
+                                                        <div className="staff-review_form-item-input">
+                                                            <span>
+                                                                Nhận xét:
+                                                            </span>
+                                                            <TextArea
+                                                                rows={5}
+                                                                placeholder="Nhập nhận xét"
+                                                                value={
+                                                                    result
+                                                                        ? result.find(
+                                                                              (
+                                                                                  ires: IResult
+                                                                              ) =>
+                                                                                  ires.criteriaid ===
+                                                                                  item.criteriaid
+                                                                          )
+                                                                              ?.note
+                                                                        : undefined
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </Form.Item>
+                                                </div>
+                                            </Form.Item>
+                                        );
+                                    })}
+                                <Form.Item>
+                                    <Space style={{ marginLeft: 300 }}>
+                                        <Button
+                                            type="primary"
+                                            danger
+                                            icon={<CloseOutlined />}
+                                            onClick={() => {
+                                                setIsShowForm(false);
+                                            }}
+                                        >
+                                            Huỷ
+                                        </Button>
+                                        <Button
+                                            type="primary"
+                                            icon={<CheckOutlined />}
+                                            style={{ marginLeft: 30 }}
+                                            htmlType="submit"
+                                            disabled={!!result}
+                                        >
+                                            Đánh giá
+                                        </Button>
+                                    </Space>
+                                </Form.Item>
+                            </Form>
                         </div>
                     </div>
                 )}

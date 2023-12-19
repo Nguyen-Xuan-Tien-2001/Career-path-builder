@@ -1,8 +1,12 @@
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
+import { GetCriteriaDetailByCriteriaID } from "./../../ApiServices/StaffReviewApi";
+
 interface DataType {
-    criteria: string;
+    criteriaid: number;
+    criterianame: string;
     description: string;
     level1: string;
     level2: string;
@@ -23,11 +27,27 @@ interface IProps {
 }
 
 const TableInfo = (props: IProps) => {
+    const [detail, setDetail] = useState<DataType>();
+
+    useEffect(() => {
+        async function fetchData() {
+            const res = await GetCriteriaDetailByCriteriaID(
+                props.criteria?.criteriaid || 0
+            );
+            setDetail({
+                ...res?.data.data[0],
+                description: props?.criteria?.description || "",
+                criterianame: props?.criteria?.criterianame || "",
+            });
+        }
+        fetchData();
+    }, [props?.criteria]);
+
     const columns: ColumnsType<DataType> = [
         {
             title: "Năng lực",
-            dataIndex: "criteria",
-            key: "criteria",
+            dataIndex: "criterianame",
+            key: "criterianame",
             render: (text) => <p style={{ fontWeight: 600 }}>{text}</p>,
             align: "center",
             width: 50,
@@ -78,13 +98,14 @@ const TableInfo = (props: IProps) => {
 
     const data: DataType[] = [
         {
-            criteria: props.criteria?.criterianame || "",
-            description: props?.criteria?.description || "",
-            level1: "Lắng nghe ,Ghi chú, Nắm bắt đầy đủ nhu cầu, Mong đợi khách hàng",
-            level2: "Phân tích như cầu của khách, Đặt câu hỏi, Phân tích thực trạng nguồn lực của khách hàng, Biết vấn đề khách hàng gặp phải, Có lộ trình cho khách hàng, Nắm bắt được những điều diễn ra trong công việc thực tế của khác hàng, Nhận được yêu cầu và trao đổi với cấp trên",
-            level3: "Nắm rõ chuyên môn và công việc của khách hàng, Mô tả công việc, Đối tượng phục vụ, Đối tượng sử dụng, Mục đích sử dụng, Giá trị tạo ra cho khách hàng",
-            level4: "Có nguyên tắc đàm phán, Xây dựng thang đo, Khả năng đánh giá nhu cầu của khách hàng, Thời gian và chi phí thực hiện, Chất lượng của sản phẩm/dự án",
-            level5: "",
+            criteriaid: detail?.criteriaid || 0,
+            criterianame: detail?.criterianame || "",
+            description: detail?.description || "",
+            level1: detail?.level1 || "",
+            level2: detail?.level2 || "",
+            level3: detail?.level3 || "",
+            level4: detail?.level4 || "",
+            level5: detail?.level5 || "",
         },
     ];
     return (
