@@ -9,13 +9,13 @@ import ReactFlow, {
 
 import "reactflow/dist/style.css";
 import "./map.scss";
-import { initNodes, initEdges, Nodes, edges } from "./dataTest.tsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ModalListCriteria from "./Modal/ModalListCriteria.tsx";
 import ModalCriteriaDeclaration from "./Modal/ModalCriteriaDeclaration.tsx";
 
 //API
 import { GetTree } from "../../ApiServices/MapApi/GetTree.tsx";
+import { message } from "antd";
 
 export enum ConnectionLineType {
   Bezier = "default",
@@ -26,37 +26,8 @@ export enum ConnectionLineType {
 }
 
 function Map() {
-  const { getTreeResponse, getTreeIsLoading, getTreeError, getTreeRefetch } =
-    GetTree();
-
-  // const nodeData = Nodes.map((value: any, index: any) => {
-  //   return {
-  //     id: String(value.id),
-  //     data: { label: value.data.shortname, levelname: value.data.levelname },
-  //     position: value.position,
-  //     sourcePosition: Position.Right,
-  //     targetPosition: Position.Left,
-  //     draggable: false,
-  //     className:
-  //       value.levelclass <= 1
-  //         ? `node__level${value.levelclass}`
-  //         : `node__level node__level${value.levelclass}`,
-  //   };
-  // });
-
-  // const edgeData = edges.map((value: any, index: any) => {
-  //   return {
-  //     id: String(index),
-  //     source: value.source,
-  //     target: value.target,
-  //     animated: true,
-  //     type: ConnectionLineType.Straight,
-  //   };
-  // });
-
-  // // caching lại values nodes khi cây dom thay đổi kh refresh key node
-  // const initialNodes = useMemo(() => (nodeData ? nodeData : []), [nodeData]);
-  // const initialEdges = useMemo(() => (edgeData ? edgeData : []), [edgeData]);
+  const { getTreeResponse } = GetTree();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const [nodesData, setNodes, onNodesChange] = useNodesState([]);
   const [edgesData, setEdges, onEdgesChange] = useEdgesState([]);
@@ -120,6 +91,20 @@ function Map() {
     setOpen(true);
   };
 
+  const success = (message: string) => {
+    messageApi.open({
+      type: "success",
+      content: message,
+    });
+  };
+
+  const error = (message: string) => {
+    messageApi.open({
+      type: "error",
+      content: message,
+    });
+  };
+
   //Hàm xử lý khi click vào một NODE bất kỳ trên lộ trình
   const handleOnNodeClick = (e: any, obj: any) => {
     if (obj.className !== "node__level0" && obj.className !== "node__level1") {
@@ -130,6 +115,7 @@ function Map() {
 
   return (
     <>
+      {contextHolder}
       <ModalListCriteria
         setOpenModalKhaibao={setOpenModalKhaibao}
         openModalKhaibao={openModalKhaibao}
@@ -138,6 +124,9 @@ function Map() {
         tabNode={tabNode}
       />
       <ModalCriteriaDeclaration
+        success={success}
+        error={error}
+        setTabNode={setTabNode}
         setOpen={setOpenModalKhaibao}
         open={openModalKhaibao}
         tabNode={tabNode}
