@@ -10,7 +10,9 @@ interface dataRespone {
 }
 
 export const GetCriteriaByLevelId = (levelId: any) => {
-  const getCriteriaByLevelUrl = `/Criteria_Levels/GetCriteriaByLevelId?levelId=${levelId}`;
+  const getCriteriaByLevelUrl = `/Criteria_Levels/GetCriteriaByLevelId?levelId=${
+    levelId ? levelId : 1
+  }`;
 
   const {
     response: getCriteriaByLevelResponse,
