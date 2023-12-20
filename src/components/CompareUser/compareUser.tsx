@@ -1,4 +1,4 @@
-import { Row, Col, Select, Typography, Form, message, Switch, Button } from 'antd';
+import { Row, Col, Select, Typography, Form, message, Button } from 'antd';
 import './compareUser.css'
 import ButtonBase from '../ButtonBase/ButtonBase';
 import {
@@ -22,12 +22,20 @@ import { Line } from 'react-chartjs-2';
 import { getAllReview } from '../../ApiServices/CompareUserApi/getAllReview';
 import { getAllUser } from '../../ApiServices/CompareUserApi/getAllUser';
 import { getCompareUser } from '../../ApiServices/CompareUserApi/getCompareUser';
+import { getAllCriteriabyPathId } from '../../ApiServices/CompareUserApi/getAllCriteriabyPathId';
 
 function CompareUser() {
     const [form] = Form.useForm();
     const [selectedValues, setSelectedValues] = useState([]);
     const [selectedValuesReview, setSelectedValuesReview] = useState(0);
+    const [dataReview, setDataReview] = useState<any>([]);
+    const [dataUser, setDataUser] = useState<any>([]);
+    const [dataCompareUser, setCompareUser] = useState<any>([]);
+    const [checkedCompare, setCheckedCompare] = useState(true);
+    const [criteriaName, setCriteriaName] = useState<any>([]);
     const [messageApi, contextHolder] = message.useMessage();
+
+    // 2 hàm thông báo là success: thành công và error: thất bại
     const success = () => {
         messageApi.open({
             type: 'success',
@@ -40,6 +48,8 @@ function CompareUser() {
             content: 'Vui lòng chọn đợt đánh giá và user cần so sánh',
         });
     };
+
+    //Hàm set dữ liệu nhân viên vào giới hạn là 2 nhân viên
     const handleSelect = (selectedOptions: any) => {
         form.setFieldsValue({
             username_userid: form.getFieldValue('username_userid').slice(0, 2),
@@ -50,31 +60,27 @@ function CompareUser() {
             setSelectedValues(selectedOptions);
         }
     };
+
+    //Hàm lưu dữ liệu đợt đánh giá
     const handleSelectReview = (selectecOption: any) => {
         setSelectedValuesReview(selectecOption);
     }
 
-    const [dataReview, setDataReview] = useState<any>([]);
-    const [dataUser, setDataUser] = useState<any>([]);
-    const [dataCompareUser, setCompareUser] = useState<any>([]);
     const {
         getAllReviewResponse,
-        // getAllIsLoading,
-        // getAllError,
-        // getAllRefetch,
     } = getAllReview();
     const {
         getAllUserResponse,
-        // getAllIsLoading,
-        // getAllError,
-        // getAllRefetch,
     } = getAllUser();
     const {
         getCompareUserResponse,
-        // getCompareUserIsLoading,
-        // getCompareUserError,
         callgetCompareUserRefetch,
     } = getCompareUser();
+    const {
+        getAllCriteriaResponse,
+    } = getAllCriteriabyPathId()
+
+    // Dùng để set dữ liệu api vào các biến
     useEffect(() => {
         if (getAllReviewResponse) {
             setDataReview(getAllReviewResponse);
@@ -85,9 +91,12 @@ function CompareUser() {
         if (getCompareUserResponse) {
             setCompareUser(getCompareUserResponse)
         }
-    }, [getAllReviewResponse, getAllUserResponse, getCompareUserResponse])
+        if (getAllCriteriaResponse) {
+            setCriteriaName(getAllCriteriaResponse)
+        }
+    }, [getAllReviewResponse, getAllUserResponse, getCompareUserResponse, getAllCriteriaResponse])
 
-
+    //Hàm nhấn so sánh để gọi api so sánh ra
     const handleSubmit = () => {
         if (selectedValuesReview !== 0 && selectedValues.length >= 2) {
             callgetCompareUserRefetch(2, selectedValuesReview, selectedValues[0], selectedValues[1]);
@@ -95,9 +104,9 @@ function CompareUser() {
         }
         else
             error();
-
     }
 
+    //Biểu đồ đường
     ChartJS.register(
         CategoryScale,
         LinearScale,
@@ -107,7 +116,6 @@ function CompareUser() {
         Tooltip,
         Legend
     );
-
     const options = {
         responsive: true,
         plugins: {
@@ -121,8 +129,11 @@ function CompareUser() {
         },
     };
 
-    const labels = ['Engagement Level', 'Algorithm/ Architecture level', 'Making product level', 'Operation Responsibility level', 'Improvement level', 'Project'];
-
+    const labels = criteriaName?.data?.map((value: any) => {
+        return (
+            value.criterianame
+        )
+    });
     const data = {
         labels,
         datasets: [
@@ -144,10 +155,7 @@ function CompareUser() {
             },
         ],
     };
-    const [checkedCompare, setCheckedCompare] = useState(true);
-    // const handlechecked = (checked: boolean) => {
-    //     setCheckedCompare(checked);
-    //   };
+    //
     return (
         <>
             {contextHolder}
@@ -217,24 +225,13 @@ function CompareUser() {
                                         <div className='userid-name underlined'>
                                             Phòng ban
                                         </div>
-                                        <div className='Criteria'>
-                                            Engagement Level
-                                        </div>
-                                        <div className='Criteria'>
-                                            Algorithm/ Architecture level
-                                        </div>
-                                        <div className='Criteria'>
-                                            Making product level
-                                        </div>
-                                        <div className='Criteria'>
-                                            Operation Responsibility level
-                                        </div>
-                                        <div className='Criteria'>
-                                            Improvement level
-                                        </div>
-                                        <div className='Criteria'>
-                                            Project
-                                        </div>
+                                        {criteriaName?.data?.map((value: any) => {
+                                            return (
+                                                <div className='Criteria'>
+                                                    {value.criterianame}
+                                                </div>
+                                            )
+                                        })}
                                     </div>
 
                                 </Col>
