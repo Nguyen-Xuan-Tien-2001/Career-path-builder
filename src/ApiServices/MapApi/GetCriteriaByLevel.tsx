@@ -3,24 +3,24 @@ import useAxios from "../../hook/useAxios.tsx";
 import httpClient from "../../utils/axiosInstance";
 
 export const GetAllCV = () => {
-    const getAllCVUrl = "/CV/getall";
+  const getAllCVUrl = "/CV/getall";
 
-    const {
-        response: getAllCVResponse,
-        isLoading: getAllCVIsLoading,
-        error: getAllCVError,
-        refetch: getAllCVRefetch,
-    } = useAxios({
-        axiosInstance: httpClient,
-        method: "GET",
-        url: getAllCVUrl,
-        requestConfig: {},
-    });
+  const {
+    response: getCriteriaByLevelResponse,
+    isLoading: getCriteriaByLevelIsLoading,
+    error: getCriteriaByLevelError,
+    refetch: getCriteriaByLevelRefetch,
+  } = useAxios({
+    axiosInstance: httpClient,
+    method: "GET",
+    url: getCriteriaByLevelUrl,
+    requestConfig: {},
+  });
 
-    return {
-        getAllCVResponse,
-        getAllCVIsLoading,
-        getAllCVError,
-        getAllCVRefetch,
-    };
+  return {
+    getAllCVResponse,
+    getAllCVIsLoading,
+    getAllCVError,
+    getAllCVRefetch,
+  };
 };

@@ -1,7 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 
+interface IResponse {
+    data: any[];
+    status: string;
+    messsage: string;
+    errorcode: number;
+}
+
 //Hook này dùng cho method Gọi tự động
-const useAxios = (configObj) => {
+const useAxios = (configObj: any) => {
     const { axiosInstance, method, url, requestConfig = {} } = configObj;
 
     const [response, setResponse] = useState(null);
@@ -34,7 +41,7 @@ const useAxios = (configObj) => {
 
                 setResponse(res.data);
                 setError(null);
-            } catch (err) {
+            } catch (err: any) {
                 setError(err.response);
             } finally {
                 setIsLoading(false);
