@@ -22,7 +22,7 @@ function EmployeeReviewInformation() {
         // getAllIsLoading,
         // getAllError,
         // getAllRefetch,
-    } = getAllReviewResultUserId(5, 5);
+    } = getAllReviewResultUserId(5, 5, 3);
     const {
         getAllUserInfResponse,
     } = getAllInformationUserId(5, 2, 5);

@@ -2,8 +2,8 @@ import useAxios from "../../hook/useAxios.tsx";
 import httpClient from "../../utils/axiosInstance.tsx";
 
 
-export const getAllReviewResultUserId = (staffId:any,reviewId: any) => {
-  const getAllReviewResultUserId = `/AllReviewResultUser/getAllReviewResultUserId?staffId=${staffId}&&reviewId=${reviewId}`;
+export const getAllReviewResultUserId = (staffId:any,reviewId: any,reviewresultid: any) => {
+  const getAllReviewResultUserId = `/AllReviewResultUser/getAllReviewResultUserId?staffId=${staffId}&&reviewId=${reviewId}&&reviewresultid=${reviewresultid}`;
   const {
     response: getAllResponse,
     isLoading: getAllIsLoading,
