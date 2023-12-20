@@ -12,14 +12,26 @@ interface DataType {
   comment?: string;
 }
 function EmployeeReviewInformation() {
-  const [dataUser, setDataUser] = useState<any>([]);
-  const [userInformation, setUserInformation] = useState<any>([]);
-  const { getAllResponse } = getAllReviewResultUserId(1, 1);
-  const { getAllUserInfResponse } = getAllInformationUserId(1, 1, 1);
-  useEffect(() => {
-    setDataUser(getAllResponse);
-    setUserInformation(getAllUserInfResponse);
-  }, [getAllResponse, getAllUserInfResponse]);
+    const [dataUser, setDataUser] = useState<any>([]);
+    const [userInformation, setUserInformation] = useState<any>([]);
+    const {
+        getAllResponse,
+        // getAllIsLoading,
+        // getAllError,
+        // getAllRefetch,
+    } = getAllReviewResultUserId(5, 5, 3);
+    const {
+        getAllUserInfResponse,
+    } = getAllInformationUserId(5, 2, 5);
+    useEffect(() => {
+        setDataUser(getAllResponse);
+        setUserInformation(getAllUserInfResponse);
+    }, [getAllResponse, getAllUserInfResponse]);
+    // const [datav, setDataV] = useState([]);//tự đánh giá
+    // const [dataKhac, setDataKhac] = useState([]);//tự đánh giá
+    // useEffect(()=>{
+    //    if(dataUser && dataUser.data){
+    //     if(dataUser.data && dataUser.data.length > 0){
 
   console.log(userInformation?.data);
 

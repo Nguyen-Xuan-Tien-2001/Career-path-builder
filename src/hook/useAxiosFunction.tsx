@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 interface IResponse {
-  data: object;
+  data: [];
   status: string;
   message: string;
   errorcode: number;
 }
 const useAxiosFunction = () => {
   const [response, setResponse] = useState<IResponse>({
-    data: {},
+    data: [],
     status: "",
     message: "",
     errorcode: 0,
