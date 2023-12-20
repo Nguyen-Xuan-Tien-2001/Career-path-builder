@@ -23,7 +23,8 @@ function ModalCriteriaDeclaration(param: any) {
   const setOpen = param.setOpen;
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
-  const { getCriteriaByCapacityResponse } = GetCriteriaByCapacityId();
+  const { getCriteriaByCapacityResponse, getCriteriaByCapacityRefetch } =
+    GetCriteriaByCapacityId();
   const { addCriteriaToLevelResponse, callAddCriteriaToLevelRefetch } =
     AddCriteriaToLevelService();
 
@@ -59,8 +60,8 @@ function ModalCriteriaDeclaration(param: any) {
     }
   }, [addCriteriaToLevelResponse]);
 
-  const [inputPoint, setInputPoint] = useState<boolean>(false);
-  const [inputCoefficien, setInputCoefficien] = useState<boolean>(false);
+  const [inputPoint, setInputPoint] = useState<boolean>(true);
+  const [inputCoefficien, setInputCoefficien] = useState<boolean>(true);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -168,10 +169,12 @@ function ModalCriteriaDeclaration(param: any) {
         return dataTable[value];
       });
       callAddCriteriaToLevelRefetch(tempInput);
+      setDataTable(data);
     }
   };
 
   const handleCancel = (e: React.MouseEvent<HTMLElement>) => {
+    getCriteriaByCapacityRefetch();
     setSelectedRowKeys([]);
     setOpen(false);
   };
