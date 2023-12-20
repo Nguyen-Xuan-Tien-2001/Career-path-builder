@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 interface IResponse {
-  data: object;
+  data: [];
   status: string;
   messsage: string;
   errorcode: number;
 }
 const useAxiosFunction = () => {
-  const [response, setResponse] = useState<IResponse[]>([]);
+  const [response, setResponse] = useState<IResponse>();
   const [error, setError] = useState<number>();
   const [loading, setLoading] = useState<boolean>(false);
   const [controller, setController] = useState<any>();
