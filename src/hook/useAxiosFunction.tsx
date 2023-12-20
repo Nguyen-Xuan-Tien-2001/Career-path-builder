@@ -6,7 +6,12 @@ interface IResponse {
   errorcode: number;
 }
 const useAxiosFunction = () => {
-  const [response, setResponse] = useState<IResponse>();
+  const [response, setResponse] = useState<IResponse>({
+    data: [],
+    status: "",
+    message: "",
+    errorcode: 0,
+  });
   const [error, setError] = useState<number>();
   const [loading, setLoading] = useState<boolean>(false);
   const [controller, setController] = useState<any>();
