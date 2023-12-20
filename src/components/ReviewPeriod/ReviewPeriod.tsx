@@ -20,6 +20,7 @@ import { GetAllReview } from '../../ApiServices/ReviewPeriodApi/GetAllReview';
 import moment from 'moment';
 import { AddReviewPeriodService } from '../../ApiServices/ReviewPeriodApi/AddReviewPeriod';
 import { useForm } from 'antd/es/form/Form';
+import BtnUpdateReviewPeriod from './BtnUpdateReviewPeriod';
 
 
 const dateFormat = 'YYYY-MM-DD';
@@ -63,39 +64,38 @@ const ReviewPeriod = () => {
     const [timeend, setTimeEnd] = useState<any>(dayjs('2023-12-01', dateFormat))
     const [dataReviewTable, setDataReviewTable] = useState<any>()
     const [optionReviewPeriod, setOptionReviewPeriod] = useState<any>(0)
-    const [review, setReview]=useState(0)
+    const [review, setReview] = useState(0)
     const dataSelectPath = getAllPathResponse?.data?.map((val: any, index: number) => {
         return {
             value: val.pathid,
             label: val.pathname
         }
     });
-    console.log('review', review)
     const [messageApi, contextHolder] = message.useMessage();
-    const success = (message:string) => {
+    const success = (message: string) => {
         messageApi.open({
-          type: 'success',
-          content: message,
+            type: 'success',
+            content: message,
         });
-      };
-    
-      const error = (message:string) => {
+    };
+
+    const error = (message: string) => {
         messageApi.open({
-          type: 'error',
-          content: message,
+            type: 'error',
+            content: message,
         });
-      };
+    };
 
     const showModal = () => {
         setIsModalOpen(true);
     };
-    
+
     const handleOk = () => {
-        if(timeend-timestart>=0){
+        if (timeend - timestart >= 0) {
             let data = {
                 reviewname: reviewName,
-                timestart: timestart,
-                timeend: timeend,
+                timestart: moment(timestart).format('YYYY-MM-DD'),
+                timeend: moment(timeend).format('YYYY-MM-DD'),
                 pathid: path,
                 pathname: 'pathname'
             }
@@ -105,17 +105,21 @@ const ReviewPeriod = () => {
             setTimeStart(dayjs('2023-12-01', dateFormat));
             setTimeEnd(dayjs('2023-12-01', dateFormat));
             setIsModalOpen(false);
-        }else{
+        } else {
             error('Ngày kết thúc phải sau ngày bắt đầu!');
         }
         
     };
+    console.log(addReviewPeriodResponse)
+    if(addReviewPeriodResponse?.errorcode==0){
+        success('Thêm mới đợt đánh giá thành công')
+    }
     const handleCancel = () => {
         setIsModalOpen(false);
     };
     const onChangeStart: DatePickerProps['onChange'] = (date, dateString) => {
-        console.log(date);
-        
+
+
         setTimeStart(dayjs(dateString, dateFormat))
     };
     const onChangeEnd: DatePickerProps['onChange'] = (date, dateString) => {
@@ -131,12 +135,12 @@ const ReviewPeriod = () => {
     const columns: ColumnsType<DataType> = [
         {
             title: 'STT',
-            dataIndex: 'key',
+            dataIndex: 'reviewid',
             key: 'key',
         },
         {
             title: 'Đợt đánh giá',
-            dataIndex: 'reviewperiod',
+            dataIndex: 'reviewname',
             key: 'reviewperiod',
         },
         {
@@ -163,31 +167,25 @@ const ReviewPeriod = () => {
         },
         {
             title: 'Lộ trình',
-            dataIndex: 'pathName',
+            dataIndex: 'pathname',
             key: 'pathName',
-            // render: (_) => (
-            //     <>
-            //          {_.map((value: any) => (
-            //             <Space size="middle">
-            //                 <a>Invite {value.pathname}</a>
-            //             </Space>
-            //         ))}
-            //         <Space size="middle">
-            //             <a>{_.pathname}</a>
-            //         </Space>
-            //     </>
-            // )
         },
         {
             title: 'Action',
             key: 'operation',
             fixed: 'right',
             width: 100,
-            render: () => <Space direction='vertical'>
-                <ButtonBase label='Sửa' icon={<EditOutlined />} className={'btn_edit'} />
-                <ButtonBase label='Chi tiết' icon={<IssuesCloseOutlined />} className={'btn_detail'} />
-                <ButtonBase label='Xóa' icon={<CloseOutlined />} className={'btn_delete'} />
-            </Space>,
+            render: (index: any) => {
+                return (
+                    <>
+                        <Space direction='vertical' id={index.key}>
+                            <BtnUpdateReviewPeriod callGetReviewByPathRefetch={callGetReviewByPathRefetch} setDataReviewTable={setDataReviewTable} dataSelectPath={dataSelectPath} data={index} />
+                            <ButtonBase label='Chi tiết' icon={<IssuesCloseOutlined />} className={'btn_detail'} />
+                            {/* <ButtonBase label='Xóa' icon={<CloseOutlined />} className={'btn_delete'} /> */}
+                        </Space>
+                    </>
+                )
+            },
         },
     ];
 
@@ -202,17 +200,17 @@ const ReviewPeriod = () => {
     }
     function handleOnselectReview(e: any) {
         setReview(e)
-        console.log(e)
     }
     function handleOnsubmitSearch() {
         callGetReviewByPathRefetch(path);
-        console.log('path', GetReviewByPathResponse)
         setDataReviewTable(GetReviewByPathResponse?.data)
     }
 
+    const dataTable= dataReviewTable;
+    
     return (
         <div className='review'>
-             {contextHolder}
+            {contextHolder}
             <div className='review_container'>
                 <div className='review_header'>
                     <HomeOutlined className='icon_home' />
@@ -267,15 +265,7 @@ const ReviewPeriod = () => {
                         <span style={{ color: '#055586', fontSize: 30 + 'px' }}>Kết quả khai báo:</span>
                     </div>
                     <div>
-                        <Table dataSource={dataReviewTable?.map((value: any, i: number) => {
-                            return {
-                                key: value.reviewid,
-                                reviewperiod: value.reviewname,
-                                startDate: value.timestart,
-                                endDate: value.timeend,
-                                pathName: value.pathname
-                            }
-                        })} columns={columns} />
+                        <Table dataSource={dataTable} columns={columns} />
                     </div>
                 </div>
             </div>
@@ -288,52 +278,52 @@ const ReviewPeriod = () => {
                 cancelText="Đóng"
             >
                 <div className='review_modal'>
-                   
-                        <Row>
-                            <Col span={24}>
-                                <Row>Lộ trình:</Row>
-                                <Select
-                                    style={{ width: '100%', marginTop: 10 }}
-                                    placeholder="---Lộ trình---"
-                                    optionFilterProp="children"
-                                    options={dataSelectPath}
-                                    onSelect={(e) => setPath(e)}
-                                    value={path}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={24}>
-                                <Row>Đợt đánh giá:</Row>
-                                <Input style={{ marginTop: 10 }} onChange={(e: any) => setReviewName(e.target.value)}
-                                    placeholder="Nhập đợt đánh giá"
-                                    value={reviewName}
-                                     />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={24}>
-                                <Row>Ngày bắt đầu đánh giá:</Row>
-                                <DatePicker style={{ marginTop: 10, width: '100%' }}
-                                    onChange={onChangeStart}
-                                    placeholder='Ngày bắt đầu đánh giá' 
-                                    value={timestart}
-                                    />
-                                    
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={24}>
-                                <Row>Ngày kết thúc đánh giá:</Row>
-                                <DatePicker style={{ marginTop: 10, width: '100%' }}
-                                    onChange={onChangeEnd}
-                                    placeholder='Ngày kết thúc đánh giá' 
-                                    value={timeend}
-                                    status={(timeend-timestart)<0?'error':''}
-                                    />
-                            </Col>
-                        </Row>
-                    
+
+                    <Row>
+                        <Col span={24}>
+                            <Row>Lộ trình:</Row>
+                            <Select
+                                style={{ width: '100%', marginTop: 10 }}
+                                placeholder="---Lộ trình---"
+                                optionFilterProp="children"
+                                options={dataSelectPath}
+                                onSelect={(e) => setPath(e)}
+                                value={path}
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <Row>Đợt đánh giá:</Row>
+                            <Input style={{ marginTop: 10 }} onChange={(e: any) => setReviewName(e.target.value)}
+                                placeholder="Nhập đợt đánh giá"
+                                value={reviewName}
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <Row>Ngày bắt đầu đánh giá:</Row>
+                            <DatePicker style={{ marginTop: 10, width: '100%' }}
+                                onChange={onChangeStart}
+                                placeholder='Ngày bắt đầu đánh giá'
+                                value={timestart}
+                            />
+
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <Row>Ngày kết thúc đánh giá:</Row>
+                            <DatePicker style={{ marginTop: 10, width: '100%' }}
+                                onChange={onChangeEnd}
+                                placeholder='Ngày kết thúc đánh giá'
+                                value={timeend}
+                                status={(timeend - timestart) < 0 ? 'error' : ''}
+                            />
+                        </Col>
+                    </Row>
+
                 </div>
             </Modal>
         </div>

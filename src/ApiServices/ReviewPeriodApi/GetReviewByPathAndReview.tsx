@@ -11,7 +11,7 @@ export const GetReviewByPathAndReviewService = () => {
   } = useAxiosFunction();
 
   const callGetReviewByPathAndReviewRefetch = (pathid:number) => {
-    const GetReviewByPathUrl = `/ReviewPeriod/GetAllReviewPeriodByPathId?id=${pathid}`;
+    const GetReviewByPathUrl = `/ReviewPeriod/GetAllReviewPeriodByReviewId?reviewid=3&pathid=2`;
     GetReviewByPathAndReviewRefetch({
       axiosInstance: httpClient,
       method: "GET",
