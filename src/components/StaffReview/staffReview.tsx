@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Select, Input, Tooltip, Modal, Form, Space } from "antd";
+import {
+    Button,
+    Select,
+    Input,
+    Tooltip,
+    Modal,
+    Form,
+    Space,
+    Spin,
+    message,
+} from "antd";
 import {
     FormOutlined,
     InfoCircleFilled,
@@ -7,6 +17,7 @@ import {
     CheckOutlined,
     HomeOutlined,
     CaretRightOutlined,
+    LoadingOutlined,
 } from "@ant-design/icons";
 
 import "./staffReview.css";
@@ -17,7 +28,10 @@ import {
     GetAllUserByAssessoridReviewid,
     GetAllCriterialByPath,
     GetAllResultReviewByAssessoridReviewid,
+    AddReviewResult,
+    AddReviewResultDetail,
 } from "./../../ApiServices/StaffReviewApi";
+import moment from "moment";
 
 interface IReview {
     pathid: number;
@@ -54,6 +68,21 @@ interface IResult {
     userid: number;
 }
 
+interface IReviewResult {
+    assessmenttime: string;
+    reviewresult: number;
+    reviewid?: number;
+    userid?: number;
+}
+
+interface IReviewResultDetail {
+    accessorid: number;
+    criteriaid: number;
+    note: string;
+    point: number;
+    reviewresultid: number;
+}
+
 const StaffReview: React.FC = () => {
     const [isShowForm, setIsShowForm] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -64,6 +93,9 @@ const StaffReview: React.FC = () => {
     const [criterias, setCriterias] = useState([]);
     const [selectedCriteria, setSelectedCriteria] = useState<ICriteria>();
     const [result, setResult] = useState<Array<IResult>>();
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [isSuccess, setIsSuccess] = useState<boolean>(false);
+    const [messageApi, contextHolder] = message.useMessage();
 
     const { TextArea } = Input;
 
@@ -80,6 +112,7 @@ const StaffReview: React.FC = () => {
         setSelectedUser(
             users?.find((item: IUser) => item.userid === parseInt(value))
         );
+        setIsSuccess(false);
     };
 
     const onChangeReview = (value: string) => {
@@ -87,6 +120,7 @@ const StaffReview: React.FC = () => {
         setSelectedReview(parseInt(value));
         setUsers([]);
         setSelectedUser(undefined);
+        setIsSuccess(false);
     };
 
     const filterOption = (
@@ -116,33 +150,49 @@ const StaffReview: React.FC = () => {
     };
 
     const onFinish = (values: object) => {
-        const reviewResult = {
-            assessmenttime: new Date().toISOString().slice(0, 19) + "Z",
+        setIsSubmitting(true);
+
+        const reviewResult: IReviewResult = {
+            assessmenttime: moment(new Date()).format("YYYY-MM-DD"),
+            reviewresult: 0,
             reviewid: selectedReview,
             userid: selectedUser?.userid,
         };
-
-        const detail = [];
-
-        const keys = Object.keys(values);
-        const vals: string[] = Object.values(values);
-        for (let i = 0; i < keys.length; i += 2) {
-            if (keys[i].includes("point")) {
-                const id = parseInt(keys[i].split("point")[0]);
-                const temp = {
-                    criteriaid: id,
-                    point: parseFloat(vals[i]),
-                    note: vals[i + 1],
-                    accessorid: 1, //current user id
-                    reviewresultid: selectedReview,
-                };
-                detail.push(temp);
-            }
-        }
-
         //add  review result
-        console.log("review result", reviewResult);
-        console.log("detail", detail);
+        async function addReviewResult() {
+            const res = await AddReviewResult(reviewResult);
+            const detail: IReviewResultDetail[] = [];
+
+            const keys = Object.keys(values);
+            const vals: string[] = Object.values(values);
+            for (let i = 0; i < keys.length; i += 2) {
+                if (keys[i].includes("point")) {
+                    const id = parseInt(keys[i].split("point")[0]);
+                    const temp = {
+                        criteriaid: id,
+                        point: parseFloat(vals[i]),
+                        note: vals[i + 1] ? vals[i + 1] : "",
+                        accessorid: 1, //current user id
+                        reviewresultid: res?.data?.data,
+                    };
+                    detail.push(temp);
+                }
+            }
+            //add review result detail
+            async function addReviewResultDetail() {
+                const res = await AddReviewResultDetail(detail);
+                if (!res?.data?.errorcode) {
+                    setIsSuccess(true);
+                    success();
+                } else {
+                    error();
+                }
+            }
+            addReviewResultDetail();
+        }
+        addReviewResult();
+
+        setIsSubmitting(false);
     };
 
     const onFinishFailed = (errorInfo: object) => {
@@ -170,7 +220,11 @@ const StaffReview: React.FC = () => {
                     1, //current user id
                     selectedReview
                 );
-                setUsers(res?.data?.data);
+                setUsers(
+                    res?.data?.data.sort(
+                        (a: IUser, b: IUser) => a.userid - b.userid
+                    )
+                );
             }
         }
         async function fetchDataReview() {
@@ -191,6 +245,20 @@ const StaffReview: React.FC = () => {
             setSelectedUser(undefined);
         }
     }, [users]);
+
+    const success = () => {
+        messageApi.open({
+            type: "success",
+            content: `Đánh giá ${selectedUser?.userid} - ${selectedUser?.staffname} thành công!`,
+        });
+    };
+
+    const error = () => {
+        messageApi.open({
+            type: "error",
+            content: `Đánh giá ${selectedUser?.userid} - ${selectedUser?.staffname} thất bại!`,
+        });
+    };
 
     return (
         <>
@@ -243,7 +311,7 @@ const StaffReview: React.FC = () => {
                                     options={users?.map((item: IUser) => {
                                         return {
                                             value: item.userid.toString(),
-                                            label: item.staffname,
+                                            label: `${item?.userid} - ${item?.staffname}`,
                                         };
                                     })}
                                 />
@@ -261,6 +329,7 @@ const StaffReview: React.FC = () => {
                         </div>
                     </div>
                 </div>
+                {contextHolder}
                 {isShowForm && (
                     <div className="staff-review_container">
                         <div className="staff-review_header">
@@ -345,11 +414,6 @@ const StaffReview: React.FC = () => {
                                                     <Form.Item
                                                         name={`${item?.criteriaid}point`}
                                                         rules={[
-                                                            {
-                                                                required: true,
-                                                                message:
-                                                                    "Vui lòng nhập điểm đánh giá!",
-                                                            },
                                                             () => ({
                                                                 validator(
                                                                     _,
@@ -429,6 +493,7 @@ const StaffReview: React.FC = () => {
                                             type="primary"
                                             danger
                                             icon={<CloseOutlined />}
+                                            disabled={isSubmitting}
                                             onClick={() => {
                                                 setIsShowForm(false);
                                             }}
@@ -440,9 +505,25 @@ const StaffReview: React.FC = () => {
                                             icon={<CheckOutlined />}
                                             style={{ marginLeft: 30 }}
                                             htmlType="submit"
-                                            disabled={!!result}
+                                            disabled={
+                                                !!result ||
+                                                isSubmitting ||
+                                                isSuccess
+                                            }
                                         >
                                             Đánh giá
+                                            {isSubmitting && (
+                                                <Spin
+                                                    indicator={
+                                                        <LoadingOutlined
+                                                            style={{
+                                                                fontSize: 24,
+                                                            }}
+                                                            spin
+                                                        />
+                                                    }
+                                                />
+                                            )}
                                         </Button>
                                     </Space>
                                 </Form.Item>
