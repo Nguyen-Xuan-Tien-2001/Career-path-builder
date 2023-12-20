@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 interface IResponse {
     data: [];
     status: string;
-    messsage: string;
+    message: string;
     errorcode: number;
 }
 const useAxiosFunction = () => {

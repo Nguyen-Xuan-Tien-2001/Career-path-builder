@@ -5,3 +5,4 @@ export { default as GetCriteriaDetailByCriteriaID } from "./GetCriteriaDetailByC
 export { default as GetAllResultReviewByAssessoridReviewid } from "./GetAllResultReviewByAssessoridReviewid";
 export { default as AddReviewResult } from "./AddReviewResult";
 export { default as AddReviewResultDetail } from "./AddReviewResultDetail";
+export { default as GetAllReviewDetailByUserId } from "./GetAllReviewDetailByUserId";
