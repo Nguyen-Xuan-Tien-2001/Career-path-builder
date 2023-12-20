@@ -22,6 +22,7 @@ import { Line } from 'react-chartjs-2';
 import { getAllReview } from '../../ApiServices/CompareUserApi/getAllReview';
 import { getAllUser } from '../../ApiServices/CompareUserApi/getAllUser';
 import { getCompareUser } from '../../ApiServices/CompareUserApi/getCompareUser';
+import { getAllCriteriabyPathId } from '../../ApiServices/CompareUserApi/getAllCriteriabyPathId';
 
 function CompareUser() {
     const [form] = Form.useForm();
@@ -31,8 +32,9 @@ function CompareUser() {
     const [dataUser, setDataUser] = useState<any>([]);
     const [dataCompareUser, setCompareUser] = useState<any>([]);
     const [checkedCompare, setCheckedCompare] = useState(true);
+    const [criteriaName, setCriteriaName] = useState<any>([]);
     const [messageApi, contextHolder] = message.useMessage();
-    
+
     // 2 hàm thông báo là success: thành công và error: thất bại
     const success = () => {
         messageApi.open({
@@ -63,7 +65,7 @@ function CompareUser() {
     const handleSelectReview = (selectecOption: any) => {
         setSelectedValuesReview(selectecOption);
     }
-    
+
     const {
         getAllReviewResponse,
     } = getAllReview();
@@ -74,6 +76,9 @@ function CompareUser() {
         getCompareUserResponse,
         callgetCompareUserRefetch,
     } = getCompareUser();
+    const {
+        getAllCriteriaResponse,
+    } = getAllCriteriabyPathId()
 
     // Dùng để set dữ liệu api vào các biến
     useEffect(() => {
@@ -86,7 +91,10 @@ function CompareUser() {
         if (getCompareUserResponse) {
             setCompareUser(getCompareUserResponse)
         }
-    }, [getAllReviewResponse, getAllUserResponse, getCompareUserResponse])
+        if (getAllCriteriaResponse) {
+            setCriteriaName(getAllCriteriaResponse)
+        }
+    }, [getAllReviewResponse, getAllUserResponse, getCompareUserResponse, getAllCriteriaResponse])
 
     //Hàm nhấn so sánh để gọi api so sánh ra
     const handleSubmit = () => {
@@ -98,7 +106,7 @@ function CompareUser() {
             error();
     }
 
-   //Biểu đồ đường
+    //Biểu đồ đường
     ChartJS.register(
         CategoryScale,
         LinearScale,
@@ -120,7 +128,12 @@ function CompareUser() {
             },
         },
     };
-    const labels = ['Engagement Level', 'Algorithm/ Architecture level', 'Making product level', 'Operation Responsibility level', 'Improvement level', 'Project'];
+
+    const labels = criteriaName?.data?.map((value: any) => {
+        return (
+            value.criterianame
+        )
+    });
     const data = {
         labels,
         datasets: [
@@ -212,24 +225,13 @@ function CompareUser() {
                                         <div className='userid-name underlined'>
                                             Phòng ban
                                         </div>
-                                        <div className='Criteria'>
-                                            Engagement Level
-                                        </div>
-                                        <div className='Criteria'>
-                                            Algorithm/ Architecture level
-                                        </div>
-                                        <div className='Criteria'>
-                                            Making product level
-                                        </div>
-                                        <div className='Criteria'>
-                                            Operation Responsibility level
-                                        </div>
-                                        <div className='Criteria'>
-                                            Improvement level
-                                        </div>
-                                        <div className='Criteria'>
-                                            Project
-                                        </div>
+                                        {criteriaName?.data?.map((value: any) => {
+                                            return (
+                                                <div className='Criteria'>
+                                                    {value.criterianame}
+                                                </div>
+                                            )
+                                        })}
                                     </div>
 
                                 </Col>

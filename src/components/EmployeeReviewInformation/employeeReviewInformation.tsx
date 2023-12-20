@@ -16,10 +16,10 @@ function EmployeeReviewInformation() {
   const [userInformation, setUserInformation] = useState<any>([]);
   const {
     getAllResponse,
-  } = getAllReviewResultUserId(5, 5, 3);
+  } = getAllReviewResultUserId(1, 1, 1);
   const {
     getAllUserInfResponse,
-  } = getAllInformationUserId(5, 2, 5);
+  } = getAllInformationUserId(1, 1, 1);
 
   //Hàm để set dữ liệu vào biến
   useEffect(() => {
@@ -34,8 +34,7 @@ function EmployeeReviewInformation() {
       dataIndex: "criterianame",
       key: "criteria",
       render: (text) => <p style={{ fontWeight: 600 }}>{text}</p>,
-      align: "center",
-      width: 400,
+      width: 300,
     },
     {
       title: "Mức điểm",
@@ -57,8 +56,7 @@ function EmployeeReviewInformation() {
       dataIndex: "criterianame",
       key: "criteria",
       render: (text) => <p style={{ fontWeight: 600 }}>{text}</p>,
-      align: "center",
-      width: 400,
+      width: 300,
     },
     {
       title: "Mức điểm",
@@ -84,29 +82,32 @@ function EmployeeReviewInformation() {
         <div className="information-user">
           <h1>Thông tin kết quả đánh giá của nhân viên</h1>
           <Form>
-            <Row justify={"center"} gutter={[16, 0]}>
-              <Col className="information-css">Nhân viên:</Col>
-              <Col span={4} className="information-css">
-                {userInformation?.data?.userid} -{" "}
-                {userInformation?.data?.staffname}
-              </Col>
-              <Col className="information-css">Kì đánh giá:</Col>
-              <Col className="information-css">
-                {userInformation?.data?.reviewname}
-              </Col>
-            </Row>
-            <Row justify={"center"} gutter={[16, 0]}>
-              <Col className="information-css">Level:</Col>
-              <Col span={3} className="information-css">
-                {userInformation?.data?.positionjob}
-              </Col>
-              <Col className="information-css" style={{ marginLeft: 40 }}>
-                Kết quả:
-              </Col>
-              <Col className="information-css">
-                {userInformation?.data?.levelname}
-              </Col>
-            </Row>
+            {userInformation?.data === null ?
+              <h3 style={{ textAlign: "center" }}>Điểm của bạn không đạt để có kết quả đánh giá nhân viên</h3>
+              : <>
+                <Row justify={"center"} gutter={[16, 0]}>
+                  <Col className="information-css">Nhân viên:</Col>
+                  <Col span={4} className="information-css">
+                    {userInformation?.data?.userid} -{" "}
+                    {userInformation?.data?.staffname}
+                  </Col>
+                  <Col className="information-css">Kì đánh giá:</Col>
+                  <Col className="information-css">
+                    {userInformation?.data?.reviewname}
+                  </Col>
+                </Row>
+                <Row justify={"center"} gutter={[16, 0]}>
+                  <Col className="information-css">Level:</Col>
+                  <Col span={3} className="information-css">
+                    {userInformation?.data?.positionjob}
+                  </Col>
+                  <Col className="information-css" style={{ marginLeft: 40 }}>
+                    Kết quả:
+                  </Col>
+                  <Col className="information-css">
+                    {userInformation?.data?.levelname}
+                  </Col>
+                </Row></>}
           </Form>
           <h2>Chi tiết đánh giá:</h2>
           {dataUser?.data?.map((item: any) => {
