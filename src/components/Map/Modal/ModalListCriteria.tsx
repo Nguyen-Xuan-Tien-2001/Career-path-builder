@@ -30,12 +30,8 @@ const columns = [
 ];
 
 function ModalListCriteria(param: any) {
-  const {
-    getCriteriaByLevelResponse,
-    getCriteriaByLevelIsLoading,
-    getCriteriaByLevelError,
-    getCriteriaByLevelRefetch,
-  } = GetCriteriaByLevelId(param.tabNode.id);
+  const { getCriteriaByLevelResponse, getCriteriaByLevelRefetch } =
+    GetCriteriaByLevelId(param.tabNode.id);
 
   const handleOk = (e: React.MouseEvent<HTMLElement>) => {
     param.setOpenModalKhaibao(true);
