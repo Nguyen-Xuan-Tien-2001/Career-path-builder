@@ -54,8 +54,6 @@ function EmployeeReviewInformation() {
     //     }
     //    }
     // },[dataUser])
-    console.log(userInformation?.data);
-
     const columns: ColumnsType<DataType> = [
         {
             title: `Bản thân`,
