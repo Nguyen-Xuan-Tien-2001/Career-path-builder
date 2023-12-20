@@ -12,29 +12,22 @@ interface DataType {
   comment?: string;
 }
 function EmployeeReviewInformation() {
-    const [dataUser, setDataUser] = useState<any>([]);
-    const [userInformation, setUserInformation] = useState<any>([]);
-    const {
-        getAllResponse,
-        // getAllIsLoading,
-        // getAllError,
-        // getAllRefetch,
-    } = getAllReviewResultUserId(5, 5, 3);
-    const {
-        getAllUserInfResponse,
-    } = getAllInformationUserId(5, 2, 5);
-    useEffect(() => {
-        setDataUser(getAllResponse);
-        setUserInformation(getAllUserInfResponse);
-    }, [getAllResponse, getAllUserInfResponse]);
-    // const [datav, setDataV] = useState([]);//tự đánh giá
-    // const [dataKhac, setDataKhac] = useState([]);//tự đánh giá
-    // useEffect(()=>{
-    //    if(dataUser && dataUser.data){
-    //     if(dataUser.data && dataUser.data.length > 0){
+  const [dataUser, setDataUser] = useState<any>([]);
+  const [userInformation, setUserInformation] = useState<any>([]);
+  const {
+    getAllResponse,
+  } = getAllReviewResultUserId(5, 5, 3);
+  const {
+    getAllUserInfResponse,
+  } = getAllInformationUserId(5, 2, 5);
 
-  console.log(userInformation?.data);
+  //Hàm để set dữ liệu vào biến
+  useEffect(() => {
+    setDataUser(getAllResponse);
+    setUserInformation(getAllUserInfResponse);
+  }, [getAllResponse, getAllUserInfResponse]);
 
+  //Hàm để xuất dữ liệu ra cột của bản thân
   const columns: ColumnsType<DataType> = [
     {
       title: `Bản thân`,
@@ -57,6 +50,7 @@ function EmployeeReviewInformation() {
       key: "comment",
     },
   ];
+  //Hàm để xuất dữ liệu ra cột của người khác
   const columnsI: ColumnsType<DataType> = [
     {
       title: `Ẩn danh`,

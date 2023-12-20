@@ -1,4 +1,4 @@
-import { Row, Col, Select, Typography, Form, message, Switch, Button } from 'antd';
+import { Row, Col, Select, Typography, Form, message, Button } from 'antd';
 import './compareUser.css'
 import ButtonBase from '../ButtonBase/ButtonBase';
 import {
@@ -27,7 +27,13 @@ function CompareUser() {
     const [form] = Form.useForm();
     const [selectedValues, setSelectedValues] = useState([]);
     const [selectedValuesReview, setSelectedValuesReview] = useState(0);
+    const [dataReview, setDataReview] = useState<any>([]);
+    const [dataUser, setDataUser] = useState<any>([]);
+    const [dataCompareUser, setCompareUser] = useState<any>([]);
+    const [checkedCompare, setCheckedCompare] = useState(true);
     const [messageApi, contextHolder] = message.useMessage();
+    
+    // 2 hàm thông báo là success: thành công và error: thất bại
     const success = () => {
         messageApi.open({
             type: 'success',
@@ -40,6 +46,8 @@ function CompareUser() {
             content: 'Vui lòng chọn đợt đánh giá và user cần so sánh',
         });
     };
+
+    //Hàm set dữ liệu nhân viên vào giới hạn là 2 nhân viên
     const handleSelect = (selectedOptions: any) => {
         form.setFieldsValue({
             username_userid: form.getFieldValue('username_userid').slice(0, 2),
@@ -50,31 +58,24 @@ function CompareUser() {
             setSelectedValues(selectedOptions);
         }
     };
+
+    //Hàm lưu dữ liệu đợt đánh giá
     const handleSelectReview = (selectecOption: any) => {
         setSelectedValuesReview(selectecOption);
     }
-
-    const [dataReview, setDataReview] = useState<any>([]);
-    const [dataUser, setDataUser] = useState<any>([]);
-    const [dataCompareUser, setCompareUser] = useState<any>([]);
+    
     const {
         getAllReviewResponse,
-        // getAllIsLoading,
-        // getAllError,
-        // getAllRefetch,
     } = getAllReview();
     const {
         getAllUserResponse,
-        // getAllIsLoading,
-        // getAllError,
-        // getAllRefetch,
     } = getAllUser();
     const {
         getCompareUserResponse,
-        // getCompareUserIsLoading,
-        // getCompareUserError,
         callgetCompareUserRefetch,
     } = getCompareUser();
+
+    // Dùng để set dữ liệu api vào các biến
     useEffect(() => {
         if (getAllReviewResponse) {
             setDataReview(getAllReviewResponse);
@@ -87,7 +88,7 @@ function CompareUser() {
         }
     }, [getAllReviewResponse, getAllUserResponse, getCompareUserResponse])
 
-
+    //Hàm nhấn so sánh để gọi api so sánh ra
     const handleSubmit = () => {
         if (selectedValuesReview !== 0 && selectedValues.length >= 2) {
             callgetCompareUserRefetch(2, selectedValuesReview, selectedValues[0], selectedValues[1]);
@@ -95,9 +96,9 @@ function CompareUser() {
         }
         else
             error();
-
     }
 
+   //Biểu đồ đường
     ChartJS.register(
         CategoryScale,
         LinearScale,
@@ -107,7 +108,6 @@ function CompareUser() {
         Tooltip,
         Legend
     );
-
     const options = {
         responsive: true,
         plugins: {
@@ -120,9 +120,7 @@ function CompareUser() {
             },
         },
     };
-
     const labels = ['Engagement Level', 'Algorithm/ Architecture level', 'Making product level', 'Operation Responsibility level', 'Improvement level', 'Project'];
-
     const data = {
         labels,
         datasets: [
@@ -144,10 +142,7 @@ function CompareUser() {
             },
         ],
     };
-    const [checkedCompare, setCheckedCompare] = useState(true);
-    // const handlechecked = (checked: boolean) => {
-    //     setCheckedCompare(checked);
-    //   };
+    //
     return (
         <>
             {contextHolder}

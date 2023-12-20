@@ -70,7 +70,8 @@ function ModalCriteriaDeclaration(param: any) {
     e: any,
     criteriaid: number,
     index: number
-  ) => {
+  ) => {    
+        
     if (e < 0 || e > 10) {
       setInputCoefficien(true);
     } else {
@@ -168,6 +169,7 @@ function ModalCriteriaDeclaration(param: any) {
         return dataTable[value];
       });
       callAddCriteriaToLevelRefetch(tempInput);
+      setDataTable(data);
     }
   };
 
