@@ -30,6 +30,7 @@ import {
     GetAllResultReviewByAssessoridReviewid,
     AddReviewResult,
     AddReviewResultDetail,
+    GetAllReviewDetailByUserId,
 } from "./../../ApiServices/StaffReviewApi";
 import moment from "moment";
 
@@ -83,6 +84,19 @@ interface IReviewResultDetail {
     reviewresultid: number;
 }
 
+interface IRV {
+    userId: number;
+    staffName: string;
+    gender: boolean;
+    dateOfBirth: string;
+    department: string;
+    positionJob: string;
+    reviewResultsId: number;
+    assessmentTime: string;
+    reviewreult: number;
+    reviewId: number;
+}
+
 const StaffReview: React.FC = () => {
     const [isShowForm, setIsShowForm] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -133,7 +147,7 @@ const StaffReview: React.FC = () => {
         async function fetchDataResultReview() {
             if (selectedReview) {
                 const res = await GetAllResultReviewByAssessoridReviewid(
-                    1, //current user id
+                    3, //current user id
                     selectedReview
                 );
                 const data = res?.data?.data;
@@ -152,6 +166,10 @@ const StaffReview: React.FC = () => {
     const onFinish = (values: object) => {
         setIsSubmitting(true);
 
+        async function fetchDataResultReviewID() {
+            return await GetAllReviewDetailByUserId(selectedUser?.userid);
+        }
+
         const reviewResult: IReviewResult = {
             assessmenttime: moment(new Date()).format("YYYY-MM-DD"),
             reviewresult: 0,
@@ -160,7 +178,20 @@ const StaffReview: React.FC = () => {
         };
         //add  review result
         async function addReviewResult() {
-            const res = await AddReviewResult(reviewResult);
+            const data = await fetchDataResultReviewID();
+            const result = data?.data?.data?.filter(
+                (item: IRV) =>
+                    item.reviewId === selectedReview &&
+                    item.userId === selectedUser?.userid
+            );
+            let rid: number = 0;
+            if (result[0]?.reviewResultsId > 0) {
+                rid = result[0]?.reviewResultsId;
+            } else {
+                const res = await AddReviewResult(reviewResult);
+                rid = parseInt(res?.data?.data);
+            }
+            console.log(rid);
             const detail: IReviewResultDetail[] = [];
 
             const keys = Object.keys(values);
@@ -172,12 +203,13 @@ const StaffReview: React.FC = () => {
                         criteriaid: id,
                         point: parseFloat(vals[i]),
                         note: vals[i + 1] ? vals[i + 1] : "",
-                        accessorid: 1, //current user id
-                        reviewresultid: res?.data?.data,
+                        accessorid: 3, //current user id
+                        reviewresultid: rid,
                     };
                     detail.push(temp);
                 }
             }
+
             //add review result detail
             async function addReviewResultDetail() {
                 const res = await AddReviewResultDetail(detail);
@@ -217,7 +249,7 @@ const StaffReview: React.FC = () => {
         async function fetchDataUser() {
             if (selectedReview) {
                 const res = await GetAllUserByAssessoridReviewid(
-                    1, //current user id
+                    3, //current user id
                     selectedReview
                 );
                 setUsers(

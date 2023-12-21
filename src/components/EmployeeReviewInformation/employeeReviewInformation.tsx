@@ -12,37 +12,29 @@ interface DataType {
   comment?: string;
 }
 function EmployeeReviewInformation() {
-    const [dataUser, setDataUser] = useState<any>([]);
-    const [userInformation, setUserInformation] = useState<any>([]);
-    const {
-        getAllResponse,
-        // getAllIsLoading,
-        // getAllError,
-        // getAllRefetch,
-    } = getAllReviewResultUserId(5, 5, 3);
-    const {
-        getAllUserInfResponse,
-    } = getAllInformationUserId(5, 2, 5);
-    useEffect(() => {
-        setDataUser(getAllResponse);
-        setUserInformation(getAllUserInfResponse);
-    }, [getAllResponse, getAllUserInfResponse]);
-    // const [datav, setDataV] = useState([]);//tự đánh giá
-    // const [dataKhac, setDataKhac] = useState([]);//tự đánh giá
-    // useEffect(()=>{
-    //    if(dataUser && dataUser.data){
-    //     if(dataUser.data && dataUser.data.length > 0){
+  const [dataUser, setDataUser] = useState<any>([]);
+  const [userInformation, setUserInformation] = useState<any>([]);
+  const {
+    getAllResponse,
+  } = getAllReviewResultUserId(1, 1, 1);
+  const {
+    getAllUserInfResponse,
+  } = getAllInformationUserId(1, 1, 1);
 
-  console.log(userInformation?.data);
+  //Hàm để set dữ liệu vào biến
+  useEffect(() => {
+    setDataUser(getAllResponse);
+    setUserInformation(getAllUserInfResponse);
+  }, [getAllResponse, getAllUserInfResponse]);
 
+  //Hàm để xuất dữ liệu ra cột của bản thân
   const columns: ColumnsType<DataType> = [
     {
       title: `Bản thân`,
       dataIndex: "criterianame",
       key: "criteria",
       render: (text) => <p style={{ fontWeight: 600 }}>{text}</p>,
-      align: "center",
-      width: 400,
+      width: 300,
     },
     {
       title: "Mức điểm",
@@ -57,14 +49,14 @@ function EmployeeReviewInformation() {
       key: "comment",
     },
   ];
+  //Hàm để xuất dữ liệu ra cột của người khác
   const columnsI: ColumnsType<DataType> = [
     {
       title: `Ẩn danh`,
       dataIndex: "criterianame",
       key: "criteria",
       render: (text) => <p style={{ fontWeight: 600 }}>{text}</p>,
-      align: "center",
-      width: 400,
+      width: 300,
     },
     {
       title: "Mức điểm",
@@ -90,29 +82,32 @@ function EmployeeReviewInformation() {
         <div className="information-user">
           <h1>Thông tin kết quả đánh giá của nhân viên</h1>
           <Form>
-            <Row justify={"center"} gutter={[16, 0]}>
-              <Col className="information-css">Nhân viên:</Col>
-              <Col span={4} className="information-css">
-                {userInformation?.data?.userid} -{" "}
-                {userInformation?.data?.staffname}
-              </Col>
-              <Col className="information-css">Kì đánh giá:</Col>
-              <Col className="information-css">
-                {userInformation?.data?.reviewname}
-              </Col>
-            </Row>
-            <Row justify={"center"} gutter={[16, 0]}>
-              <Col className="information-css">Level:</Col>
-              <Col span={3} className="information-css">
-                {userInformation?.data?.positionjob}
-              </Col>
-              <Col className="information-css" style={{ marginLeft: 40 }}>
-                Kết quả:
-              </Col>
-              <Col className="information-css">
-                {userInformation?.data?.levelname}
-              </Col>
-            </Row>
+            {userInformation?.data === null ?
+              <h3 style={{ textAlign: "center" }}>Điểm của bạn không đạt để có kết quả đánh giá nhân viên</h3>
+              : <>
+                <Row justify={"center"} gutter={[16, 0]}>
+                  <Col className="information-css">Nhân viên:</Col>
+                  <Col span={4} className="information-css">
+                    {userInformation?.data?.userid} -{" "}
+                    {userInformation?.data?.staffname}
+                  </Col>
+                  <Col className="information-css">Kì đánh giá:</Col>
+                  <Col className="information-css">
+                    {userInformation?.data?.reviewname}
+                  </Col>
+                </Row>
+                <Row justify={"center"} gutter={[16, 0]}>
+                  <Col className="information-css">Level:</Col>
+                  <Col span={3} className="information-css">
+                    {userInformation?.data?.positionjob}
+                  </Col>
+                  <Col className="information-css" style={{ marginLeft: 40 }}>
+                    Kết quả:
+                  </Col>
+                  <Col className="information-css">
+                    {userInformation?.data?.levelname}
+                  </Col>
+                </Row></>}
           </Form>
           <h2>Chi tiết đánh giá:</h2>
           {dataUser?.data?.map((item: any) => {
