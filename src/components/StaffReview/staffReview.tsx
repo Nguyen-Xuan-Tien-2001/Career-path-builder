@@ -144,6 +144,10 @@ const StaffReview: React.FC = () => {
 
     const handleShowForm = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
+        if (!selectedReview || !selectedUser) {
+            errorSelect();
+            return;
+        }
         async function fetchDataResultReview() {
             if (selectedReview) {
                 const res = await GetAllResultReviewByAssessoridReviewid(
@@ -289,6 +293,13 @@ const StaffReview: React.FC = () => {
         messageApi.open({
             type: "error",
             content: `Đánh giá ${selectedUser?.userid} - ${selectedUser?.staffname} thất bại!`,
+        });
+    };
+
+    const errorSelect = () => {
+        messageApi.open({
+            type: "error",
+            content: `Vui lòng chọn đợt đánh giá và nhân viên!`,
         });
     };
 
