@@ -1,4 +1,5 @@
 import { Col, Input, Row, Select, Space, Table, Modal, message } from "antd";
+import { Excel } from "antd-table-saveas-excel";
 import "./ReviewDetail.scss";
 import { useEffect, useState } from "react";
 
@@ -7,6 +8,7 @@ import {
   CloudUploadOutlined,
   HomeOutlined,
   CaretRightOutlined,
+  CloudDownloadOutlined,
 } from "@ant-design/icons";
 import { ExcelRenderer } from "react-excel-renderer";
 
@@ -37,6 +39,31 @@ const ReviewDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState([]);
   const [rows, setRows] = useState([]);
+  const columns = [
+    {
+      title: "STT",
+      key: "id",
+      render: (id: any, record: any, index: any) => {
+        ++index;
+        return index;
+      },
+    },
+    {
+      title: "Mã người đánh giá",
+      dataIndex: "assessorid",
+      key: "assessorid",
+    },
+    {
+      title: "Mã người được đánh giá",
+      dataIndex: "userid",
+      key: "userid",
+    },
+    {
+      title: "Hệ số đánh giá",
+      dataIndex: "ratingcoefficient",
+      key: "ratingcoefficient",
+    },
+  ];
 
   const success = (message: string) => {
     messageApi.open({
@@ -75,6 +102,48 @@ const ReviewDetail = () => {
     callAddAssessorRefetch(data);
   };
 
+  //Printing function
+  const handleClickExport = () => {
+    const dataSource = [
+      {
+        assessorid: 1,
+        userid: 1,
+        ratingcoefficient: 1,
+      },
+      {
+        assessorid: 2,
+        userid: 1,
+        ratingcoefficient: 1.5,
+      },
+    ];
+
+    let columnExport = [
+      {
+        title: "assessorid",
+        dataIndex: "assessorid",
+        key: "assessorid",
+      },
+      {
+        title: "userid",
+        dataIndex: "userid",
+        key: "userid",
+      },
+      {
+        title: "ratingcoefficient",
+        dataIndex: "ratingcoefficient",
+        key: "ratingcoefficient",
+      },
+    ];
+    const excel = new Excel();
+    excel
+      .addSheet("List assessors")
+      .addColumns(columnExport)
+      .addDataSource(dataSource, {
+        str2Percent: true,
+      })
+      .saveAs("SampleFilesAssessor.xlsx");
+  };
+
   useEffect(() => {
     if (addAssessorResponse) {
       if (addAssessorResponse.status === "success") {
@@ -106,31 +175,6 @@ const ReviewDetail = () => {
     });
   };
 
-  const columns = [
-    {
-      title: "STT",
-      key: "id",
-      render: (id: any, record: any, index: any) => {
-        ++index;
-        return index;
-      },
-    },
-    {
-      title: "Mã người đánh giá",
-      dataIndex: "assessorid",
-      key: "assessorid",
-    },
-    {
-      title: "Mã người được đánh giá",
-      dataIndex: "userid",
-      key: "userid",
-    },
-    {
-      title: "Hệ số đánh giá",
-      dataIndex: "ratingcoefficient",
-      key: "ratingcoefficient",
-    },
-  ];
   return (
     <div className="review_detail">
       {contextHolder}
@@ -276,6 +320,13 @@ const ReviewDetail = () => {
         cancelText="Đóng"
       >
         <div className="review_modal">
+          <ButtonBase
+            onClick={handleClickExport}
+            className="btn_add"
+            label={"Tải File mẫu"}
+            icon={<CloudDownloadOutlined />}
+            style={{ width: "120px" }}
+          />
           <Input
             type="file"
             onChange={fileHandler}
