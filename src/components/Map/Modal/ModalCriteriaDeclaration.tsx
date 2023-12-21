@@ -21,15 +21,17 @@ function ModalCriteriaDeclaration(param: any) {
   const tabNode = param.tabNode;
   const open = param.open;
   const setOpen = param.setOpen;
+  const data: DataType[] = [];
+  const [dataTable, setDataTable] = useState(data);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+
+  const [inputPoint, setInputPoint] = useState<boolean>(true);
+  const [inputCoefficien, setInputCoefficien] = useState<boolean>(true);
 
   const { getCriteriaByCapacityResponse, getCriteriaByCapacityRefetch } =
     GetCriteriaByCapacityId();
   const { addCriteriaToLevelResponse, callAddCriteriaToLevelRefetch } =
     AddCriteriaToLevelService();
-
-  const data: DataType[] = [];
-  const [dataTable, setDataTable] = useState(data);
 
   useEffect(() => {
     if (getCriteriaByCapacityResponse) {
@@ -60,9 +62,6 @@ function ModalCriteriaDeclaration(param: any) {
     }
   }, [addCriteriaToLevelResponse]);
 
-  const [inputPoint, setInputPoint] = useState<boolean>(true);
-  const [inputCoefficien, setInputCoefficien] = useState<boolean>(true);
-
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -88,6 +87,28 @@ function ModalCriteriaDeclaration(param: any) {
       dataTable[index].point = e;
       dataTable[index].id = criteriaid;
     }
+  };
+
+  const handleOk = (e: React.MouseEvent<HTMLElement>) => {
+    if (inputCoefficien && inputPoint) {
+      if (selectedRowKeys.length === 0) {
+        param.error("Bạn chưa chọn tiêu chí nào cả");
+      } else {
+        param.error("Nhập giá trị trong khoảng từ 0 đến 10");
+      }
+    } else {
+      let tempInput = selectedRowKeys.map((value: any) => {
+        return dataTable[value];
+      });
+      callAddCriteriaToLevelRefetch(tempInput);
+      setDataTable(data);
+    }
+  };
+
+  const handleCancel = (e: React.MouseEvent<HTMLElement>) => {
+    getCriteriaByCapacityRefetch();
+    setSelectedRowKeys([]);
+    setOpen(false);
   };
 
   const columns: ColumnsType<DataType> = [
@@ -160,24 +181,6 @@ function ModalCriteriaDeclaration(param: any) {
       key: "unit",
     },
   ];
-
-  const handleOk = (e: React.MouseEvent<HTMLElement>) => {
-    if (inputCoefficien && inputPoint) {
-      param.error("Nhập giá trị trong khoảng từ 0 đến 10");
-    } else {
-      let tempInput = selectedRowKeys.map((value: any) => {
-        return dataTable[value];
-      });
-      callAddCriteriaToLevelRefetch(tempInput);
-      setDataTable(data);
-    }
-  };
-
-  const handleCancel = (e: React.MouseEvent<HTMLElement>) => {
-    getCriteriaByCapacityRefetch();
-    setSelectedRowKeys([]);
-    setOpen(false);
-  };
 
   const rowSelection: TableRowSelection<DataType> = {
     selectedRowKeys,
