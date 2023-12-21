@@ -66,7 +66,7 @@ const ReviewPeriod = () => {
   const [path, setPath] = useState<any>("Chọn lộ trình");
   const [reviewName, setReviewName] = useState<any>();
   const [timestart, setTimeStart] = useState<any>(
-    dayjs("2023-12-01", dateFormat)
+    dayjs()
   );
   const [timeend, setTimeEnd] = useState<any>(dayjs("2023-12-01", dateFormat));
   const [dataReviewTable, setDataReviewTable] = useState<any>();
@@ -122,47 +122,63 @@ const ReviewPeriod = () => {
 
   useEffect(() => {
     if (addReviewPeriodResponse) {
+      console.log('response', addReviewPeriodResponse);
+      
       if (addReviewPeriodResponse.status === "success") {
         success("Thêm mới đợt đánh giá thành công");
+        callGetReviewByPathRefetch(path);
       }
     }
   }, [addReviewPeriodResponse]);
 
   const handleOk = () => {
-    if (timeend - timestart >= 0) {
+    if (timeend - timestart <= 0) {
+      error("Ngày kết thúc phải sau ngày bắt đầu!");
+    }
+    else if(!reviewName){
+      error("Tên đợt đánh giá không được trống!");
+    }
+    else {
       let data = {
         reviewname: reviewName,
         timestart: moment(timestart).format("YYYY-MM-DD"),
-        timeend: moment(timeend).format("YYYY-MM-DD"),
+        timeend: dayjs(timeend).format("YYYY-MM-DD"),
         pathid: path,
         pathname: "pathname",
       };
       callReviewPeriodRefetch(data);
-      setPath(null);
+      setPath(path);
       setReviewName("");
-      setTimeStart(dayjs("2023-12-01", dateFormat));
-      setTimeEnd(dayjs("2023-12-01", dateFormat));
+      setTimeStart(dayjs());
+      setTimeEnd(dayjs());
       setIsModalOpen(false);
-    } else {
-      error("Ngày kết thúc phải sau ngày bắt đầu!");
     }
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const onChangeStart: DatePickerProps["onChange"] = (date, dateString) => {
-    setTimeStart(dayjs(dateString, dateFormat));
-  };
-  const onChangeEnd: DatePickerProps["onChange"] = (date, dateString) => {
-    setTimeEnd(dayjs(dateString, dateFormat));
-  };
+  const onChangeStart = (date:any) => {
 
+    setTimeStart(date);
+    
+    
+  };
+  // console.log('timestart', timestart);
+  const onChangeEnd = (date:any) => {
+    
+    
+    setTimeEnd(date);
+  };
+  useEffect(()=>{
+    console.log(timeend);
+  },[timeend])
+  // console.log('timeend', timeend);
   const dataColumn: ColumnsType<DataType> = [
     {
       title: "STT",
-      dataIndex: "reviewid",
       key: "key",
+      render: (_,i: any, index: number) => {return index+1}
     },
     {
       title: "Đợt đánh giá",
@@ -171,8 +187,8 @@ const ReviewPeriod = () => {
     },
     {
       title: "Ngày bắt đầu",
-      dataIndex: "startDate",
-      key: "startDate",
+      dataIndex: "timestart",
+      key: "timestart",
       render: (i: any) => {
         const formatdate = moment(i).format("DD/MM/YYYY");
         return <>{formatdate}</>;
@@ -180,8 +196,8 @@ const ReviewPeriod = () => {
     },
     {
       title: "Ngày kết thúc",
-      dataIndex: "endDate",
-      key: "endDate",
+      dataIndex: "timeend",
+      key: "timeend",
       render: (i: any) => {
         const formatdate = moment(i).format("DD/MM/YYYY");
         return <>{formatdate}</>;
@@ -279,28 +295,7 @@ const ReviewPeriod = () => {
                 }
                 options={dataSelectPath}
                 onSelect={(e) => handleOnselect(e)}
-              />
-            </Col>
-            <Col>
-              <Row>Đợt đánh giá:</Row>
-              <Select
-                style={{
-                  width: 300 + "px",
-                  marginTop: 10,
-                  marginRight: "40px",
-                }}
-                placeholder="---Chọn đợt đánh giá---"
-                options={
-                  optionReviewPeriod
-                    ? optionReviewPeriod.map((value: any, i: number) => {
-                        return {
-                          label: value.reviewname,
-                          value: value.reviewid,
-                        };
-                      })
-                    : dataSelectReview
-                }
-                onSelect={(e) => handleOnselectReview(e)}
+                value={path}
               />
             </Col>
           </Row>
@@ -354,7 +349,7 @@ const ReviewPeriod = () => {
           </Row>
           <Row>
             <Col span={24}>
-              <Row>Đợt đánh giá:</Row>
+              <Row>Tên đợt đánh giá:</Row>
               <Input
                 style={{ marginTop: 10 }}
                 onChange={(e: any) => setReviewName(e.target.value)}
