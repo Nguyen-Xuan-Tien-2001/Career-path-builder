@@ -151,7 +151,7 @@ const StaffReview: React.FC = () => {
         async function fetchDataResultReview() {
             if (selectedReview) {
                 const res = await GetAllResultReviewByAssessoridReviewid(
-                    2, //current user id
+                    1, //current user id
                     selectedReview
                 );
                 const data = res?.data?.data;
@@ -207,7 +207,7 @@ const StaffReview: React.FC = () => {
                         criteriaid: id,
                         point: parseFloat(vals[i]),
                         note: vals[i + 1] ? vals[i + 1] : "",
-                        accessorid: 2, //current user id
+                        accessorid: 1, //current user id
                         reviewresultid: rid,
                     };
                     detail.push(temp);
@@ -253,7 +253,7 @@ const StaffReview: React.FC = () => {
         async function fetchDataUser() {
             if (selectedReview) {
                 const res = await GetAllUserByAssessoridReviewid(
-                    2, //current user id
+                    1, //current user id
                     selectedReview
                 );
                 setUsers(
