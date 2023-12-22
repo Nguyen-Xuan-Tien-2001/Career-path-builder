@@ -58,6 +58,8 @@ function ModalCriteriaDeclaration(param: any) {
         param.setTabNode(0);
         setOpen(false);
         setSelectedRowKeys([]);
+        setInputCoefficien(true);
+        setInputPoint(true);
       }
     }
   }, [addCriteriaToLevelResponse]);
