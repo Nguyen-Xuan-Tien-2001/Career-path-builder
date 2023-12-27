@@ -1,6 +1,6 @@
 import { Col, Form, Row, Table } from "antd";
 import "./employeeReviewInformation.css";
-import { HomeOutlined, CaretRightOutlined } from "@ant-design/icons";
+import { HomeOutlined, CaretRightOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { getAllReviewResultUserId } from "../../ApiServices/EmployeeReviewInformationApi/getAllReviewResultUserId";
 import { useEffect, useState } from "react";
 import { ColumnsType } from "antd/es/table";
@@ -19,7 +19,7 @@ function EmployeeReviewInformation() {
   } = getAllReviewResultUserId(1, 1, 1);
   const {
     getAllUserInfResponse,
-  } = getAllInformationUserId(1, 1, 1);
+  } = getAllInformationUserId(1, 1, 1,5);
 
   //Hàm để set dữ liệu vào biến
   useEffect(() => {
@@ -57,6 +57,7 @@ function EmployeeReviewInformation() {
       key: "criteria",
       render: (text) => <p style={{ fontWeight: 600 }}>{text}</p>,
       width: 300,
+      
     },
     {
       title: "Mức điểm",
@@ -101,7 +102,7 @@ function EmployeeReviewInformation() {
                   <Col span={3} className="information-css">
                     {userInformation?.data?.positionjob}
                   </Col>
-                  <Col className="information-css" style={{ marginLeft: 40 }}>
+                  <Col className="information-css" style={{ marginLeft: 45 }}>
                     Kết quả:
                   </Col>
                   <Col className="information-css">
