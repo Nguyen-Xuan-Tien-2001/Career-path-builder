@@ -73,7 +73,7 @@ function ModalCriteriaDeclaration(param: any) {
     criteriaid: number,
     index: number
   ) => {
-    if (e < 0 || e > 10) {
+    if (e <= 0 || e > 10) {
       setInputCoefficien(true);
     } else {
       setInputCoefficien(false);
@@ -92,11 +92,17 @@ function ModalCriteriaDeclaration(param: any) {
   };
 
   const handleOk = (e: React.MouseEvent<HTMLElement>) => {
-    if (inputCoefficien && inputPoint) {
+    if (inputCoefficien || inputPoint) {
       if (selectedRowKeys.length === 0) {
         param.error("Bạn chưa chọn tiêu chí nào cả");
       } else {
-        param.error("Nhập giá trị trong khoảng từ 0 đến 10");
+        if (inputCoefficien && inputPoint) {
+          param.error("Nhập giá trị trong khoảng từ 0 đến 10");
+        } else if (inputCoefficien) {
+          param.error("Nhập giá trị hệ số trong khoảng từ 0 đến 10");
+        } else if (inputPoint) {
+          param.error("Nhập giá trị điểm trong khoảng từ 0 đến 10");
+        }
       }
     } else {
       let tempInput = selectedRowKeys.map((value: any) => {
