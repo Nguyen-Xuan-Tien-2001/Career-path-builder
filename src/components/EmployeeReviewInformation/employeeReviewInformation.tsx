@@ -16,10 +16,10 @@ function EmployeeReviewInformation() {
   const [userInformation, setUserInformation] = useState<any>([]);
   const {
     getAllResponse,
-  } = getAllReviewResultUserId(2, 1, 3);
+  } = getAllReviewResultUserId(1, 1, 1);
   const {
     getAllUserInfResponse,
-  } = getAllInformationUserId(2, 1, 1);
+  } = getAllInformationUserId(1, 1, 1,5);
 
   //Hàm để set dữ liệu vào biến
   useEffect(() => {
